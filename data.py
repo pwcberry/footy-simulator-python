@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 @dataclass
 class TeamScore:
-    goals: int
-    behinds: int
+    goals: int = 0
+    behinds: int = 0
 
     def copy(self):
         return TeamScore(self.goals, self.behinds)
@@ -38,3 +38,4 @@ class Team:
     ruck: Skills
     cohesion: float
     fitness: float
+    health: float = 1

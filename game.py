@@ -29,8 +29,6 @@ Position = namedtuple("Position", ["x", "y"])
 
 class Game:
     def __init__(self, home_team: Team, away_team: Team, log_output = sys.stdout):
-        home_team.health = 1
-        away_team.health = 1
         self.field = Field(home_team, away_team)
         self.status = GameStatus.NOT_STARTED
         self.score = GameScore(home_team.name, away_team.name)

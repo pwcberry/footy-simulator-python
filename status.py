@@ -63,8 +63,8 @@ class GameScore:
             (away_team_name, [])
         ])
         self.current_scores = dict([
-            (home_team_name, TeamScore(0, 0)),
-            (away_team_name, TeamScore(0, 0))
+            (home_team_name, TeamScore()),
+            (away_team_name, TeamScore())
         ])
         self.quarter = 0
 
