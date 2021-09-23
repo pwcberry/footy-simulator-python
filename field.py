@@ -104,11 +104,11 @@ class Field:
         self.in_attack = get_team_in_attack(0.1, 0.45, home_skill.strength, away_skill.strength)
 
         if self.in_attack != Contest.IN_CONTENTION:
-            accuracy_status = get_team_in_attack(0.05, 0.475, home_skill.accuracy, away_skill.accuracy)
+            accuracy_contest = get_team_in_attack(0.05, 0.475, home_skill.accuracy, away_skill.accuracy)
 
-            if accuracy_status != Contest.IN_CONTENTION:
-                if accuracy_status != self.in_attack:
-                    self.in_attack = accuracy_status
+            if accuracy_contest != Contest.IN_CONTENTION:
+                if accuracy_contest != self.in_attack:
+                    self.in_attack = accuracy_contest
                     self.ball_status = BallStatus.STOPPED
                 else:
                     self.ball_status = BallStatus.MOVING
