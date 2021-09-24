@@ -4,24 +4,18 @@ from enum import Enum
 from data import Team
 from status import BallStatus
 
-
 class Contest(Enum):
     HOME_TEAM = 0
     AWAY_TEAM = 1
     IN_CONTENTION = 2
 
-class BallPosition(Enum):
-    FULL_FOWARD = 1
-    POCKET_FORWARD = 2
-    HALF_FORWARD = 3
-    MID_FIELD_FORWARD = 4
-    CENTRE = 5
-    MID_FIELD_BACK = 6
-    HALF_BACK = 7
-    POCKET_BACK = 8
-    FULL_BACK = 9
+class BallDirection(Enum):
+    NONE = 0
+    FORWARD = 1
+    BACKWARD = 2
+    LATERAL = 3
 
-def get_team_in_attack(min, midpoint, home_skill, away_skill):
+def get_contest_winner(min, midpoint, home_skill, away_skill):
     nbr = random()
 
     if nbr < min:
@@ -47,6 +41,22 @@ def get_team_in_attack(min, midpoint, home_skill, away_skill):
     
     return status
 
+def get_status_after_stopped_ball():
+    nbr = random()
+    return Status.BOUNCE if nbr < 0.5 else Status.THROW_IN
+
+def get_ball_direction(min, midpoint, attack_strength, defense_strength):
+    nbr = random()
+
+    if nbr < min:
+        return BallDirection.LATERAL
+
+    if attack_strength + defense_strength >= 1:
+        diff = attack_strength - defense_strength
+        limit = midpoint + diff
+        return BallDirection.FORWARD if nbr <= limit else BallDirection.BACKWARD
+
+    return BallDirection.FORWARD if attack_strength > defense_strength else BallDirection.BACKWARD            
 
 class Field:
     def __init__(self, home_team: Team, away_team: Team):
@@ -58,6 +68,13 @@ class Field:
         self.ball_status = BallStatus.BOUNCE
         self.in_attack = Contest.IN_CONTENTION
 
+    @property
+    def in_defence(self):
+        if self.in_attack = Contest.IN_CONTENTION:
+            return Contest.IN_CONTENTION
+        
+        return Contest.AWAY_TEAM if self.in_attack == Contest.HOME_TEAM else Contest.HOME_TEAM
+    
     def set_position(self, new_position):
         if new_position < 1:
             self.position = 1
@@ -101,10 +118,10 @@ class Field:
         home_skill = self.teams[Contest.HOME_TEAM].ruck
         away_skill = self.teams[Contest.AWAY_TEAM].ruck
 
-        self.in_attack = get_team_in_attack(0.1, 0.45, home_skill.strength, away_skill.strength)
+        self.in_attack = get_contest_winner(0.1, 0.45, home_skill.strength, away_skill.strength)
 
         if self.in_attack != Contest.IN_CONTENTION:
-            accuracy_contest = get_team_in_attack(0.05, 0.475, home_skill.accuracy, away_skill.accuracy)
+            accuracy_contest = get_contest_winner(0.05, 0.475, home_skill.accuracy, away_skill.accuracy)
 
             if accuracy_contest != Contest.IN_CONTENTION:
                 if accuracy_contest != self.in_attack:
@@ -124,8 +141,26 @@ class Field:
                 if nbr > upper_limit_for_tussle:
                     self.ball_status = BallStatus.MOVING
 
+
     def workout_midfield_contest(self):
-        return
+        in_attack_skill = self.teams[self.in_attack].mid_field
+        in_defense_skill = self.teams[self.in_defence].mid_field
+        ball_direction = BallDirection.NONE
+
+        if self.ball_status == BallStatus.STOPPED:
+            self.ball_status = get_status_after_stopped_ball()
+        elif self.ball_status == BallStatus.FREE_KICK:
+            ball_direction = get_ball_direction(0.05, 0.475, in_attack_skill.strength, in_defense_skill.strength)
+            accuracy_contest = get_contest_winner(0.05, 0.475, in_attack_skill.accuracy, in_defense_skill.accuracy)
+            # do something here, and I think it's to call an instance method
+            # to clarify what happens next
+        elif self.ball_status == BallStatus.OUT_OF_BOUNDS:
+            # is in_attack already switched?
+        else:
+            # ball is moving!
+            strength_contest = get_contest_winner(0.05, 0.475, in_attack_skill.strength, in_defense_skill.strength)
+            # We need to write out some more pseudo-code to ensure the logic is correct
+            # And I have a suspicion that there's reusable functions to discover
 
     def workout_forward_contest(self):
         return
