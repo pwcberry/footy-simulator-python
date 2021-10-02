@@ -1,4 +1,5 @@
 from enum import Enum
+from dataclasses import dataclass
 from data import TeamScore
 
 class GameStatus(Enum):
@@ -15,17 +16,37 @@ class GameStatus(Enum):
 class BallStatus(Enum):
     BOUNCE = 0
     STOPPED = 1
-    MOVING = 2
+    THROW_IN = 2
     OUT_OF_BOUNDS = 3
-    THROW_IN = 4
-    FREE_KICK = 5
+    FREE_KICK = 4
+    MOVING = 5
     BEHIND = 6
     GOAL = 7
+
+class Possession(Enum):
+    HOME_TEAM = 0
+    AWAY_TEAM = 1
+    IN_CONTENTION = 2
+
+class FieldArea(Enum):
+    RUCK = 0
+    FORWARDS = 1
+    MID_FIELD = 2
+    BACKS = 3   
+
+@dataclass
+class FieldStatus:
+    field_area: FieldArea
+    possession: Possession
+    ball_status: BallStatus
 
 GAME_TICKS_PER_MINUTE = 10
 MINUTES_PER_QUARTER = 20
 
 class Timer:
+    minutes: int
+    seconds: int
+
     def __init__(self):
         self.reset()
 

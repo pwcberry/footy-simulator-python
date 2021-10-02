@@ -4,10 +4,7 @@ from enum import Enum
 from data import Team
 from status import BallStatus
 
-class Contest(Enum):
-    HOME_TEAM = 0
-    AWAY_TEAM = 1
-    IN_CONTENTION = 2
+
 
 class BallDirection(Enum):
     NONE = 0
@@ -19,22 +16,22 @@ def get_contest_winner(min, midpoint, home_skill, away_skill):
     nbr = random()
 
     if nbr < min:
-        return Contest.IN_CONTENTION
+        return Possession.IN_CONTENTION
 
     if home_skill + away_skill >= 1:
         diff = home_skill - away_skill
         limit = midpoint + diff
-        return Contest.HOME_TEAM if nbr <= limit else Contest.AWAY_TEAM
+        return Possession.HOME_TEAM if nbr <= limit else Possession.AWAY_TEAM
 
     counter = 1
-    status = Contest.IN_CONTENTION
+    status = Possession.IN_CONTENTION
     min = home_skill + away_skill
 
-    while counter <= 3 and status == Contest.IN_CONTENTION:
+    while counter <= 3 and status == Possession.IN_CONTENTION:
         if nbr <= home_skill:
-            status = Contest.HOME_TEAM
+            status = Possession.HOME_TEAM
         elif nbr > home_skill and nbr <= min:
-            status = Contest.AWAY_TEAM
+            status = Possession.AWAY_TEAM
         else:
             nbr = random()
             counter += 1
@@ -61,19 +58,19 @@ def get_ball_direction(min, midpoint, attack_strength, defense_strength):
 class Field:
     def __init__(self, home_team: Team, away_team: Team):
         self.teams = dict([
-            (Contest.HOME_TEAM, home_team),
-            (Contest.AWAY_TEAM, away_team)
+            (Possession.HOME_TEAM, home_team),
+            (Possession.AWAY_TEAM, away_team)
         ])
         self.position = 5
         self.ball_status = BallStatus.BOUNCE
-        self.in_attack = Contest.IN_CONTENTION
+        self.in_attack = Possession.IN_CONTENTION
 
     @property
     def in_defence(self):
-        if self.in_attack = Contest.IN_CONTENTION:
-            return Contest.IN_CONTENTION
+        if self.in_attack = Possession.IN_CONTENTION:
+            return Possession.IN_CONTENTION
         
-        return Contest.AWAY_TEAM if self.in_attack == Contest.HOME_TEAM else Contest.HOME_TEAM
+        return Possession.AWAY_TEAM if self.in_attack == Possession.HOME_TEAM else Possession.HOME_TEAM
     
     def set_position(self, new_position):
         if new_position < 1:
@@ -86,7 +83,7 @@ class Field:
     def centre_ball(self):
         self.position = 5
         self.ball_status = BallStatus.BOUNCE
-        self.in_attack = Contest.IN_CONTENTION
+        self.in_attack = Possession.IN_CONTENTION
 
     def get_active_home_team_skill(self):
         if self.ball_status == BallStatus.BOUNCE or self.ball_status == BallStatus.THROW_IN:
@@ -99,40 +96,40 @@ class Field:
             return "backs"
 
     def move_forward(self):
-        if self.in_attack == Contest.HOME_TEAM:
+        if self.in_attack == Possession.HOME_TEAM:
             if self.position > 1:
                 self.position -= 1
-        elif self.in_attack == Contest.AWAY_TEAM:
+        elif self.in_attack == Possession.AWAY_TEAM:
             if self.position < 9:
                 self.position += 1
 
     def move_backward(self):
-        if self.in_attack == Contest.HOME_TEAM:
+        if self.in_attack == Possession.HOME_TEAM:
             if self.position < 9:
                 self.position += 1
-        elif self.in_attack == Contest.AWAY_TEAM:
+        elif self.in_attack == Possession.AWAY_TEAM:
             if self.position > 1:
                 self.position -= 1
 
     def workout_ruck_contest(self):
-        home_skill = self.teams[Contest.HOME_TEAM].ruck
-        away_skill = self.teams[Contest.AWAY_TEAM].ruck
+        home_skill = self.teams[Possession.HOME_TEAM].ruck
+        away_skill = self.teams[Possession.AWAY_TEAM].ruck
 
         self.in_attack = get_contest_winner(0.1, 0.45, home_skill.strength, away_skill.strength)
 
-        if self.in_attack != Contest.IN_CONTENTION:
+        if self.in_attack != Possession.IN_CONTENTION:
             accuracy_contest = get_contest_winner(0.05, 0.475, home_skill.accuracy, away_skill.accuracy)
 
-            if accuracy_contest != Contest.IN_CONTENTION:
+            if accuracy_contest != Possession.IN_CONTENTION:
                 if accuracy_contest != self.in_attack:
                     self.in_attack = accuracy_contest
                     self.ball_status = BallStatus.STOPPED
                 else:
                     self.ball_status = BallStatus.MOVING
             else:
-                self.in_attack = Contest.IN_CONTENTION
+                self.in_attack = Possession.IN_CONTENTION
 
-        if self.in_attack == Contest.IN_CONTENTION:
+        if self.in_attack == Possession.IN_CONTENTION:
             if self.ball_status == BallStatus.THROW_IN:
                 nbr = random()
                 strength_diff = home_skill.strength - away_skill.strength

@@ -21,8 +21,8 @@ class Skills:
     The skills that represent a unit within the team.
 
     accuracy: how accurate the unit is at moving the ball forward. For forwards, it indicates how accurate they are at kicking goals
-    pressure: how strong the unit is at apply pressure to prevent the ball moving forward
-    strength: how effective the unit is once they have possesion of the ball
+    pressure: how strong the unit is at apply pressure to prevent the ball moving forward (defensive pressure)
+    strength: how effective the unit is once they have possesion of the ball (attacking efficiency)
     """
     accuracy: float
     pressure: float

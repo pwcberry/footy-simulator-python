@@ -19,6 +19,11 @@ from logger import GameLog
 # Workout the rules of the simulation
 # Does health decrease with ticks, is it random, or is it a factor that affects the other ratings?
 
+# Examples of Markov chains: https://en.wikipedia.org/wiki/Examples_of_Markov_chains
+# Use Matrices to work out probabilities and the next state (result of the contest)
+# Other references:
+# - https://en.wikipedia.org/wiki/Stochastic_matrix (Transition Matrix)
+# - https://en.wikipedia.org/wiki/Monte_Carlo_method
 
 
 MAX_X = 2
