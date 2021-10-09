@@ -1,4 +1,5 @@
 import random
+from math import fsum
 from status import BallStatus, Possession, FieldArea, FieldStatus
 
 RUCK_BOUNCE_STATUS = FieldStatus(FieldArea.RUCK, BallStatus.BOUNCE, Possession.IN_CONTENTION)
@@ -54,25 +55,23 @@ Each row is then normalised to ensure it adds to 1 (to conform to the Markov pro
 
 
 def prob(base, strength, accuracy, pressure):
-    return base + base * strength + base * accuracy + base * pressure
+    value = base + base * strength + base * accuracy - base * pressure
+    return value if value > 0 else 0
 
 
-def normalise(row, dynamic_indexes):
-    prob_sum = sum(row)
+def normalise(row, dynamic_indexes):   
+    prob_sum = fsum(row)
 
-    diff = prob_sum - 1 if prob_sum < 1 else 1 - prob_sum
-    adjustment = diff / len(dynamic_indexes)
+    while prob_sum != 1.0:
+        diff = 1.0 - prob_sum
+        adjustment = diff / len(dynamic_indexes)
 
-    for i in dynamic_indexes:
-        row[i] += adjustment
+        for i in dynamic_indexes:
+            row[i] += adjustment
+            if row[i] <= 0:
+                row[i] = 0
 
-    # Check the row now sums to 1
-    # If not, choose a dynamic element at random to bring up the difference
-    prob_sum = sum(row)
-    if prob_sum != 1:
-        diff = prob_sum - 1 if prob_sum < 1 else 1 - prob_sum
-        idx = random.choice(dynamic_indexes)
-        row[idx] += diff
+        prob_sum = fsum(row)
     
     return row
 
@@ -88,7 +87,7 @@ class MidFieldMatrix:
 
         self.matrix = dict(
             (RUCK_BOUNCE_STATUS, 
-                normalise([0, 0.05, 0.05, prob(0.05, 0, ha, 0), 0, 0.01, 0.09, prob(0.2, hst, ha, ap), prob(0.05, 0, aa, 0), 0, 0.01, 0.1, prob(0.2, ast, aa, hp)], [3, 7, 8, 13])
+                normalise([0, 0.05, 0.05, prob(0.05, 0, ha, 0), 0, 0.01, 0.09, prob(0.2, hst, ha, ap), prob(0.05, 0, aa, 0), 0, 0.01, 0.1, prob(0.2, ast, aa, hp)], [7, 3, 8, 12])
             ),
             (RUCK_STOPPED_STATUS, [0.9, 0.03, 0.07, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
             (RUCK_THROW_IN_STATUS, [0, 0.05, 0]),
