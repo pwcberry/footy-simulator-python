@@ -34,7 +34,7 @@ class FieldArea(Enum):
     MID_FIELD = 2
     BACKS = 3   
 
-@dataclass
+@dataclass(frozen=True)
 class FieldStatus:
     field_area: FieldArea
     possession: Possession
