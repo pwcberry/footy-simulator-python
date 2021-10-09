@@ -20,6 +20,8 @@ class Skills:
     """
     The skills that represent a unit within the team.
 
+    For each skill variable, the range is from -0.5 (weak) to 0.5 (strong).
+
     accuracy: how accurate the unit is at moving the ball forward. For forwards, it indicates how accurate they are at kicking goals
     pressure: how strong the unit is at apply pressure to prevent the ball moving forward (defensive pressure)
     strength: how effective the unit is once they have possesion of the ball (attacking efficiency)

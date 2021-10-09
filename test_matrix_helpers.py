@@ -113,6 +113,15 @@ class TestMatrixNormaliseFunction(unittest.TestCase):
         self.assertAlmostEqual(result[8], 0.02875)
         self.assertAlmostEqual(result[12], 0.28375)
 
+    def test_vector_is_changed_when_sum_is_less_than_one_with_dynamic_value_less_than_zero(self):
+        vector = [0, 0.05, 0.05, -0.1, 0.15]
+        dynamic_indexes = [3, 4]
+        result = normalise(vector, dynamic_indexes)
+
+        #rounding errors
+        self.assertAlmostEqual(result[3], 0.325)
+        self.assertAlmostEqual(result[4], 0.575)
+
 
 if __name__ == "__main__":
     unittest.main()
