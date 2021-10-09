@@ -91,7 +91,12 @@ class MidFieldMatrix:
                 ], [4, 5, 7, 8, 9, 11])
             ),
             (RUCK_STOPPED_STATUS, [0.9, 0.03, 0.07, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-            (RUCK_THROW_IN_STATUS, [0, 0.05, 0]),
+            (RUCK_THROW_IN_STATUS, 
+                normalise([
+                    0, 0.05, 0, 0.08,
+                    prob(0.06, hst, 0, ap), prob(0.01, 0, -ha, -ap), 0.01, prob(0.25, hst, ha, ap),
+                    prob(0.06, ast, 0, hp), prob(0.01, 0, -aa, -hp), 0.01, prob(0.25, ast, aa, hp)
+                ], [4, 5, 7, 8, 9, 11]),
             (MID_FIELD_OUT_OF_BOUNDS_STATUS, [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             (MID_FIELD_HOME_TEAM_STOPPED_STATUS, []),
             (MID_FIELD_HOME_TEAM_OUT_OF_BOUNDS_STATUS, []),
