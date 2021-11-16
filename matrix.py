@@ -97,18 +97,102 @@ class MidFieldMatrix:
                     prob(0.06, hst, 0, ap), prob(0.01, 0, -ha, -ap), 0.01, prob(0.25, hst, ha, ap),
                     prob(0.06, ast, 0, hp), prob(0.01, 0, -aa, -hp), 0.01, prob(0.25, ast, aa, hp)
                 ], [4, 5, 7, 8, 9, 11]),
-            (MID_FIELD_OUT_OF_BOUNDS_STATUS, [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            (MID_FIELD_HOME_TEAM_STOPPED_STATUS, []),
-            (MID_FIELD_HOME_TEAM_OUT_OF_BOUNDS_STATUS, []),
-            (MID_FIELD_HOME_TEAM_FREE_KICK_STATUS, []),
-            (MID_FIELD_HOME_TEAM_MOVING_STATUS, []),
-            (MID_FIELD_AWAY_TEAM_STOPPED_STATUS, []),
-            (MID_FIELD_AWAY_TEAM_OUT_OF_BOUNDS_STATUS, []),
-            (MID_FIELD_AWAY_TEAM_FREE_KICK_STATUS, []),
-            (MID_FIELD_AWAY_TEAM_MOVING_STATUS, [])
+            (MID_FIELD_THROW_IN_STATUS, [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            (MID_FIELD_HOME_TEAM_STOPPED_STATUS,
+                normalise([
+                    0, 0, 0, 0.01,
+                    prob(0.1, hst, 0, ap), 0, prob(0.05, hst, 0, 0), prob(0.44, hst, ha, ap),
+                    prob(0.08, ast, 0, hp), 0, prob(0.02, 0, 0, -ap), prob(0.02, ast, 0, -ap)
+                ]), [4, 6, 7, 8, 10, 11]),
+            (MID_FIELD_HOME_TEAM_OUT_OF_BOUNDS_STATUS, [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]),
+            (MID_FIELD_HOME_TEAM_FREE_KICK_STATUS,
+                normalise([
+                    0, 0, 0, 0, 
+                    prob(0.05, 0, -ha, -hp), prob(0.05, 0, -ha, -ap), prob(0.01, 0, 0, -hp), prob(0.55, hst, ha, ap),
+                    prob(0.08, 0, -ha, -ap), 0, prob(0.015, 0, 0, -ap), 0
+                ]), [4, 5, 6, 7, 8, 10]),
+            (MID_FIELD_HOME_TEAM_MOVING_STATUS,
+                normalise([
+                    0, 0, 0, prob(0.025, 0, -ha, -ap),
+                    prob(0.03, 0, -aa, -ap), prob(0.025, 0, -ha, -ap), prob(0.04, hst, 0, -hp), prob(0.5, hst, ha, ap),
+                    prob(0.03, 0, -ha, -ap), prob(0.025, 0, -aa, -hp), prob(0.03, ast, 0, -ap), 0
+                ]), [3, 4, 5, 6, 7, 8, 9, 10]),
+            (MID_FIELD_AWAY_TEAM_STOPPED_STATUS,
+                normalise([
+                    0, 0, 0, 0.01,
+                    prob(0.08, hst, 0, ap), 0, prob(0.02, 0, 0, -hp), prob(0.02, hst, 0, hp), 
+                    prob(0.1, ast, 0, hp), 0, prob(0.05, ast, 0, 0), prob(0.44, ast, aa, hp)
+                ]), [4, 6, 7, 8, 10, 11]),
+            (MID_FIELD_AWAY_TEAM_OUT_OF_BOUNDS_STATUS, [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
+            (MID_FIELD_AWAY_TEAM_FREE_KICK_STATUS, 
+                normalise([
+                    0, 0, 0, 0,
+                    prob(0.08, 0, -aa, -hp), 0, prob(0.015, 0, 0, -hp), 0,
+                    prob(0.05, 0, -aa, -ap), prob(0.05, 0, -aa, hp), prob(0.01, 0, 0, -ap), prob(0.55, ast, aa, hp)
+                ]), [4, 6, 8, 9, 10, 11]),
+            (MID_FIELD_AWAY_TEAM_MOVING_STATUS, 
+                normalise([
+                    0, 0, 0, prob(0.025, 0, -aa, -hp),
+                    prob(0.03, 0, -aa, -hp), prob(0.025, 0, -ha, -ap), prob(0.03, hst, 0, -hp), 0,
+                    prob(0.03, 0, -ha, -ap), prob(0.025, 0, -aa, -hp), prob(0.04, ast, 0, -hp), prob(0.5, ast, aa, hp)
+                ]), [3, 4, 5, 6, 8, 9, 10, 11])
+            )
         )
 
+    @property
+    def states(self):
+        return self.matrix.keys()
 
+class ForwardMatrix:
+    def __init__(self, home_team_skill, away_team_skill, distance):
+        hst = home_team_skill.strength
+        ha = home_team_skill.accuracy
+        hp = home_team_skill.pressure
+        ast = away_team_skill.strength
+        aa = away_team_skill.accuracy
+        ap = away_team_skill.pressure
 
+        self.matrix = dict(
+            (FORWARDS_THROW_IN_STATUS, [], [])
+            (FORWARDS_HOME_TEAM_STOPPED_STATUS, [], [])
+            (FORWARDS_HOME_TEAM_OUT_OF_BOUNDS_STATUS, [], []),
+            (FORWARDS_HOME_TEAM_FREE_KICK_STATUS, [], []),
+            (FORWARDS_HOME_TEAM_MOVING_STATUS, [], []),
+            (FORWARDS_HOME_TEAM_BEHIND_STATUS, [], []),
+            (FORWARDS_HOME_TEAM_GOAL_STATUS, [], []),
+            (FORWARDS_AWAY_TEAM_STOPPED_STATUS, [], []),
+            (FORWARDS_AWAY_TEAM_OUT_OF_BOUNDS_STATUS, [], []),
+            (FORWARDS_AWAY_TEAM_FREE_KICK_STATUS, [], []),
+            (FORWARDS_AWAY_TEAM_MOVING_STATUS, [], [])
+        )
+  
+    @property
+    def states(self):
+        return self.matrix.keys()
 
+class BacksMatrix:
+    def __init__(self, home_team_skill, away_team_skill, distance):
+        hst = home_team_skill.strength
+        ha = home_team_skill.accuracy
+        hp = home_team_skill.pressure
+        ast = away_team_skill.strength
+        aa = away_team_skill.accuracy
+        ap = away_team_skill.pressure
 
+        self.matrix = dict(
+            (BACKS_THROW_IN_STATUS, [], []),
+            (BACKS_HOME_TEAM_STOPPED_STATUS, [], []),
+            (BACKS_HOME_TEAM_OUT_OF_BOUNDS_STATUS, [], []),
+            (BACKS_HOME_TEAM_FREE_KICK_STATUS, [], []),
+            (BACKS_HOME_TEAM_MOVING_STATUS, [], []),
+            (BACKS_AWAY_TEAM_STOPPED_STATUS, [], []),
+            (BACKS_AWAY_TEAM_OUT_OF_BOUNDS_STATUS, [], []),
+            (BACKS_AWAY_TEAM_FREE_KICK_STATUS, [], []),
+            (BACKS_AWAY_TEAM_MOVING_STATUS, [], []),
+            (BACKS_AWAY_TEAM_BEHIND_STATUS, [], []),
+            (BACKS_AWAY_TEAM_GOAL_STATUS, [], [])
+        )
+  
+    @property
+    def states(self):
+        return self.matrix.keys()
