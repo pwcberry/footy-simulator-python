@@ -152,6 +152,10 @@ class ForwardMatrix:
         aa = away_team_skill.accuracy
         ap = away_team_skill.pressure
 
+        # Distance probability where distance is 1, 2, or 3
+        dp = 0.5 + (2 - distance) * 0.3
+
+
         self.matrix = dict(
             (FORWARDS_THROW_IN_STATUS, [], [])
             (FORWARDS_HOME_TEAM_STOPPED_STATUS, [], [])
@@ -178,6 +182,9 @@ class BacksMatrix:
         ast = away_team_skill.strength
         aa = away_team_skill.accuracy
         ap = away_team_skill.pressure
+
+        # Distance probability where distance is 1, 2, or 3
+        dp = 0.5 + (2 - distance) * 0.3
 
         self.matrix = dict(
             (BACKS_THROW_IN_STATUS, [], []),
