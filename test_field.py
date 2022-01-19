@@ -1,7 +1,7 @@
 import unittest
-from field import Contest, Field
+from field import Field
 from data import Team, Skills
-from status import BallStatus
+from status import BallStatus, Possession
 
 class TestField(unittest.TestCase):
     def setUp(self):
@@ -29,7 +29,7 @@ class TestField(unittest.TestCase):
         self.assertEqual(f.ball_status, BallStatus.BOUNCE)
         self.assertEqual(f.teams[0], self.team_a)
         self.assertEqual(f.teams[1], self.team_b)
-        self.assertEqual(f.in_attack, Contest.IN_CONTENTION )
+        self.assertEqual(f.in_attack, Possession.IN_CONTENTION)
 
     def test_set_position(self):
         f = Field(self.team_a, self.team_b)
@@ -51,7 +51,7 @@ class TestField(unittest.TestCase):
         f.centre_ball()
         self.assertEqual(f.position, 5)
         self.assertEqual(f.ball_status, BallStatus.BOUNCE)
-        self.assertEqual(f.in_attack, Contest.IN_CONTENTION)
+        self.assertEqual(f.in_attack, Possession.IN_CONTENTION)
 
     def test_get_active_skill_at_bounce(self):
         f = Field(self.team_a, self.team_b)

@@ -4,8 +4,6 @@ from enum import Enum
 from data import Team
 from status import BallStatus
 
-
-
 class BallDirection(Enum):
     NONE = 0
     FORWARD = 1
@@ -56,7 +54,7 @@ def get_ball_direction(min, midpoint, attack_strength, defense_strength):
     return BallDirection.FORWARD if attack_strength > defense_strength else BallDirection.BACKWARD            
 
 class Field:
-    def __init__(self, home_team: Team, away_team: Team):
+    def __init__(self, home_team, away_team):
         self.teams = dict([
             (Possession.HOME_TEAM, home_team),
             (Possession.AWAY_TEAM, away_team)
@@ -67,7 +65,7 @@ class Field:
 
     @property
     def in_defence(self):
-        if self.in_attack = Possession.IN_CONTENTION:
+        if self.in_attack == Possession.IN_CONTENTION:
             return Possession.IN_CONTENTION
         
         return Possession.AWAY_TEAM if self.in_attack == Possession.HOME_TEAM else Possession.HOME_TEAM
@@ -144,20 +142,21 @@ class Field:
         in_defense_skill = self.teams[self.in_defence].mid_field
         ball_direction = BallDirection.NONE
 
-        if self.ball_status == BallStatus.STOPPED:
-            self.ball_status = get_status_after_stopped_ball()
-        elif self.ball_status == BallStatus.FREE_KICK:
-            ball_direction = get_ball_direction(0.05, 0.475, in_attack_skill.strength, in_defense_skill.strength)
-            accuracy_contest = get_contest_winner(0.05, 0.475, in_attack_skill.accuracy, in_defense_skill.accuracy)
-            # do something here, and I think it's to call an instance method
-            # to clarify what happens next
-        elif self.ball_status == BallStatus.OUT_OF_BOUNDS:
-            # is in_attack already switched?
-        else:
-            # ball is moving!
-            strength_contest = get_contest_winner(0.05, 0.475, in_attack_skill.strength, in_defense_skill.strength)
-            # We need to write out some more pseudo-code to ensure the logic is correct
-            # And I have a suspicion that there's reusable functions to discover
+        return
+        # if self.ball_status == BallStatus.STOPPED:
+        #     self.ball_status = get_status_after_stopped_ball()
+        # elif self.ball_status == BallStatus.FREE_KICK:
+        #     ball_direction = get_ball_direction(0.05, 0.475, in_attack_skill.strength, in_defense_skill.strength)
+        #     accuracy_contest = get_contest_winner(0.05, 0.475, in_attack_skill.accuracy, in_defense_skill.accuracy)
+        #     # do something here, and I think it's to call an instance method
+        #     # to clarify what happens next
+        # elif self.ball_status == BallStatus.OUT_OF_BOUNDS:
+        #     # is in_attack already switched?
+        # else:
+        #     # ball is moving!
+        #     strength_contest = get_contest_winner(0.05, 0.475, in_attack_skill.strength, in_defense_skill.strength)
+        #     # We need to write out some more pseudo-code to ensure the logic is correct
+        #     # And I have a suspicion that there's reusable functions to discover
 
     def workout_forward_contest(self):
         return

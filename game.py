@@ -1,11 +1,9 @@
 import sys
 from random import random
 from collections import namedtuple
-from data import Team
 from status import BallStatus, GameScore, GameStatus, Timer
 from field import Field
 from logger import GameLog
-
 
 # Their rating for defence: in preventing scores and moving the ball to the mid-field
 # Their rating for mid-field: retaining the ball and moving to the forward line
@@ -33,7 +31,7 @@ Position = namedtuple("Position", ["x", "y"])
 
 
 class Game:
-    def __init__(self, home_team: Team, away_team: Team, log_output = sys.stdout):
+    def __init__(self, home_team, away_team, log_output = sys.stdout):
         self.field = Field(home_team, away_team)
         self.status = GameStatus.NOT_STARTED
         self.score = GameScore(home_team.name, away_team.name)

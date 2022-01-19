@@ -19,7 +19,7 @@ from game import Game
 # Scores at 1/4 time, half time, 3/4 time and full time.
 
 
-def play_game(home_team: Team, away_team: Team):
+def play_game(home_team, away_team):
     game = Game(home_team, away_team)
 
     game.play_quarter()
@@ -29,7 +29,7 @@ def play_game(home_team: Team, away_team: Team):
 
 
 
-def define_team(name: str) -> Team:
+def define_team(name):
     print("You will be providing a rating on the characteristics of the team:", name)
     print("Each rating is a value between 0 and 1, where 1 is represents the strongest rating")
     print("")
