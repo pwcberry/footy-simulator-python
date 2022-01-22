@@ -2,46 +2,58 @@ import random
 from math import fsum
 from status import BallStatus, Possession, FieldZone, FieldStatus
 
-RUCK_BOUNCE_STATUS = FieldStatus(FieldZone.RUCK, BallStatus.BOUNCE, Possession.IN_CONTENTION)
-RUCK_STOPPED_STATUS = FieldStatus(FieldZone.RUCK, BallStatus.STOPPED, Possession.IN_CONTENTION)
-RUCK_THROW_IN_STATUS = FieldStatus(FieldZone.RUCK, BallStatus.THROW_IN, Possession.IN_CONTENTION)
+BOUNCE_STATUS = FieldStatus(Possession.IN_CONTENTION, BallStatus.BOUNCE)
+STOPPED_STATUS = FieldStatus(Possession.IN_CONTENTION, BallStatus.STOPPED)
+THROW_IN_STATUS = FieldStatus(Possession.IN_CONTENTION, BallStatus.THROW_IN)
 
-MID_FIELD_THROW_IN_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.IN_CONTENTION, BallStatus.THROW_IN)
-MID_FIELD_HOME_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.HOME_TEAM, BallStatus.STOPPED)
-MID_FIELD_HOME_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.HOME_TEAM, BallStatus.OUT_OF_BOUNDS)
-MID_FIELD_HOME_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.HOME_TEAM, BallStatus.FREE_KICK)
-MID_FIELD_HOME_TEAM_MOVING_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.HOME_TEAM, BallStatus.MOVING)
+HOME_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(Possession.HOME_TEAM, BallStatus.OUT_OF_BOUNDS)
+HOME_TEAM_FREE_KICK_STATUS = FieldStatus(Possession.HOME_TEAM, BallStatus.FREE_KICK)
+HOME_TEAM_MOVING_STATUS = FieldStatus(Possession.HOME_TEAM, BallStatus.MOVING)
+HOME_TEAM_BEHIND_STATUS = FieldStatus(Possession.HOME_TEAM, BallStatus.BEHIND)
+HOME_TEAM_GOAL_STATUS = FieldStatus(Possession.HOME_TEAM, BallStatus.GOAL)
 
-MID_FIELD_AWAY_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.AWAY_TEAM, BallStatus.STOPPED)
-MID_FIELD_AWAY_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.AWAY_TEAM, BallStatus.OUT_OF_BOUNDS)
-MID_FIELD_AWAY_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.AWAY_TEAM, BallStatus.FREE_KICK)
-MID_FIELD_AWAY_TEAM_MOVING_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.AWAY_TEAM, BallStatus.MOVING)
+AWAY_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(Possession.AWAY_TEAM, BallStatus.OUT_OF_BOUNDS)
+AWAY_TEAM_FREE_KICK_STATUS = FieldStatus(Possession.AWAY_TEAM, BallStatus.FREE_KICK)
+AWAY_TEAM_MOVING_STATUS = FieldStatus(Possession.AWAY_TEAM, BallStatus.MOVING)
+AWAY_TEAM_BEHIND_STATUS = FieldStatus(Possession.AWAY_TEAM, BallStatus.BEHIND)
+AWAY_TEAM_GOAL_STATUS = FieldStatus(Possession.AWAY_TEAM, BallStatus.GOAL)
 
-FORWARDS_THROW_IN_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.IN_CONTENTION, BallStatus.THROW_IN)
-FORWARDS_HOME_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.STOPPED)
-FORWARDS_HOME_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.OUT_OF_BOUNDS)
-FORWARDS_HOME_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.FREE_KICK)
-FORWARDS_HOME_TEAM_MOVING_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.MOVING)
-FORWARDS_HOME_TEAM_BEHIND_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.BEHIND)
-FORWARDS_HOME_TEAM_GOAL_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.GOAL)
+# MID_FIELD_THROW_IN_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.IN_CONTENTION, BallStatus.THROW_IN)
+# MID_FIELD_HOME_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.HOME_TEAM, BallStatus.STOPPED)
+# MID_FIELD_HOME_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.HOME_TEAM, BallStatus.OUT_OF_BOUNDS)
+# MID_FIELD_HOME_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.HOME_TEAM, BallStatus.FREE_KICK)
+# MID_FIELD_HOME_TEAM_MOVING_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.HOME_TEAM, BallStatus.MOVING)
 
-FORWARDS_AWAY_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.AWAY_TEAM, BallStatus.STOPPED)
-FORWARDS_AWAY_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.AWAY_TEAM, BallStatus.OUT_OF_BOUNDS)
-FORWARDS_AWAY_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.AWAY_TEAM, BallStatus.FREE_KICK)
-FORWARDS_AWAY_TEAM_MOVING_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.AWAY_TEAM, BallStatus.MOVING)
+# MID_FIELD_AWAY_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.AWAY_TEAM, BallStatus.STOPPED)
+# MID_FIELD_AWAY_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.AWAY_TEAM, BallStatus.OUT_OF_BOUNDS)
+# MID_FIELD_AWAY_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.AWAY_TEAM, BallStatus.FREE_KICK)
+# MID_FIELD_AWAY_TEAM_MOVING_STATUS = FieldStatus(FieldZone.MID_FIELD, Possession.AWAY_TEAM, BallStatus.MOVING)
 
-BACKS_THROW_IN_STATUS = FieldStatus(FieldZone.BACKS, Possession.IN_CONTENTION, BallStatus.THROW_IN)
-BACKS_HOME_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.BACKS, Possession.HOME_TEAM, BallStatus.STOPPED)
-BACKS_HOME_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.BACKS, Possession.HOME_TEAM, BallStatus.OUT_OF_BOUNDS)
-BACKS_HOME_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.BACKS, Possession.HOME_TEAM, BallStatus.FREE_KICK)
-BACKS_HOME_TEAM_MOVING_STATUS = FieldStatus(FieldZone.BACKS, Possession.HOME_TEAM, BallStatus.MOVING)
+# FORWARDS_THROW_IN_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.IN_CONTENTION, BallStatus.THROW_IN)
+# FORWARDS_HOME_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.STOPPED)
+# FORWARDS_HOME_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.OUT_OF_BOUNDS)
+# FORWARDS_HOME_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.FREE_KICK)
+# FORWARDS_HOME_TEAM_MOVING_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.MOVING)
+# FORWARDS_HOME_TEAM_BEHIND_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.BEHIND)
+# FORWARDS_HOME_TEAM_GOAL_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.HOME_TEAM, BallStatus.GOAL)
 
-BACKS_AWAY_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.STOPPED)
-BACKS_AWAY_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.OUT_OF_BOUNDS)
-BACKS_AWAY_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.FREE_KICK)
-BACKS_AWAY_TEAM_MOVING_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.MOVING)
-BACKS_AWAY_TEAM_BEHIND_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.BEHIND)
-BACKS_AWAY_TEAM_GOAL_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.GOAL)
+# FORWARDS_AWAY_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.AWAY_TEAM, BallStatus.STOPPED)
+# FORWARDS_AWAY_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.AWAY_TEAM, BallStatus.OUT_OF_BOUNDS)
+# FORWARDS_AWAY_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.AWAY_TEAM, BallStatus.FREE_KICK)
+# FORWARDS_AWAY_TEAM_MOVING_STATUS = FieldStatus(FieldZone.FORWARDS, Possession.AWAY_TEAM, BallStatus.MOVING)
+
+# BACKS_THROW_IN_STATUS = FieldStatus(FieldZone.BACKS, Possession.IN_CONTENTION, BallStatus.THROW_IN)
+# BACKS_HOME_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.BACKS, Possession.HOME_TEAM, BallStatus.STOPPED)
+# BACKS_HOME_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.BACKS, Possession.HOME_TEAM, BallStatus.OUT_OF_BOUNDS)
+# BACKS_HOME_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.BACKS, Possession.HOME_TEAM, BallStatus.FREE_KICK)
+# BACKS_HOME_TEAM_MOVING_STATUS = FieldStatus(FieldZone.BACKS, Possession.HOME_TEAM, BallStatus.MOVING)
+
+# BACKS_AWAY_TEAM_STOPPED_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.STOPPED)
+# BACKS_AWAY_TEAM_OUT_OF_BOUNDS_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.OUT_OF_BOUNDS)
+# BACKS_AWAY_TEAM_FREE_KICK_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.FREE_KICK)
+# BACKS_AWAY_TEAM_MOVING_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.MOVING)
+# BACKS_AWAY_TEAM_BEHIND_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.BEHIND)
+# BACKS_AWAY_TEAM_GOAL_STATUS = FieldStatus(FieldZone.BACKS, Possession.AWAY_TEAM, BallStatus.GOAL)
 
 def prob(base, strength, accuracy, pressure):
     value = base + base * strength + base * accuracy - base * pressure
@@ -79,7 +91,11 @@ def normalise(row, dynamic_indexes):
 # the probability is modified depending on the skill.
 # Each row is then normalised to ensure it adds to 1 (to conform to the Markov property).
 # The matrix is stored in a dictionary named the `data` field.
-class Matrix:
+class ZoneMatrix:
+    def __init__(self, zone):
+        self.zone = zone
+        self.data = {}
+
     @property
     def states(self):
         return list(self.data.keys())

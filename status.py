@@ -41,7 +41,6 @@ class AttackDistance(IntEnum):
 
 @dataclass(frozen=True)
 class FieldStatus:
-    field_area: FieldZone
     possession: Possession
     ball_status: BallStatus
 

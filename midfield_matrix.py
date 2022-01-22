@@ -1,7 +1,10 @@
 from matrix import *
+from status import FieldZone
 
-class MidFieldMatrix(Matrix):
+class MidFieldZoneMatrix(ZoneMatrix):
     def __init__(self, home_team_skill, away_team_skill):
+        super().__init__(FiledZone.MID_FIELD)
+
         hst = home_team_skill.strength
         ha = home_team_skill.accuracy
         hp = home_team_skill.pressure
@@ -9,10 +12,8 @@ class MidFieldMatrix(Matrix):
         aa = away_team_skill.accuracy
         ap = away_team_skill.pressure
 
-        # C0R = RUCK_BOUNCE_STATUS
-        # C1R = RUCK_STOPPED_STATUS
-        # C2R = RUCK_THROW_IN_STATUS
-        # C0M = MID_FIELD_THROW_IN_STATUS
+        # C0 = STOPPED_STATUS
+        # C1 = THROW_IN_STATUS
         # H1M = MID_FIELD_HOME_TEAM_STOPPED_STATUS
         # H2M = MID_FIELD_HOME_TEAM_OUT_OF_BOUNDS_STATUS
         # H3M = MID_FIELD_HOME_TEAM_FREE_KICK_STATUS
@@ -21,6 +22,14 @@ class MidFieldMatrix(Matrix):
         # A2M = MID_FIELD_AWAY_TEAM_OUT_OF_BOUNDS_STATUS
         # A3M = MID_FIELD_AWAY_TEAM_FREE_KICK_STATUS
         # A4M = MID_FIELD_AWAY_TEAM_MOVING_STATUS
+
+        # H0 = HOME_TEAM_OUT_OF_BOUNDS_STATUS
+        # H1 = HOME_TEAM_FREE_KICK_STATUS
+        # H2 = HOME_TEAM_MOVING_STATUS
+        # A0 = AWAY_TEAM_OUT_OF_BOUNDS_STATUS
+        # A1 = AWAY_TEAM_FREE_KICK_STATUS
+        # A2 = AWAY_TEAM_MOVING_STATUS
+
 
         self.data = dict([
             # [C0R, C1R, C2R, C0M, H1M, H2M, H3M, H4M, A1M, A2M, A3M, A4M]
