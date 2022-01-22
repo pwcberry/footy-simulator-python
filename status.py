@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, IntEnum
 from dataclasses import dataclass
 from data import TeamScore
 
@@ -33,6 +33,11 @@ class FieldArea(Enum):
     FORWARDS = 1
     MID_FIELD = 2
     BACKS = 3   
+
+class AttackDistance(IntEnum):
+    GOAL_SQUARE = 1
+    TWENTY_METRES = 2
+    FIFTY_METRES = 3
 
 @dataclass(frozen=True)
 class FieldStatus:

@@ -1,4 +1,4 @@
-import matrix
+from matrix import *
 
 # def prob_dist(dist, base, strength, accuracy, pressure)
 # def prob(base, strength, accuracy, pressure)
@@ -11,9 +11,6 @@ class BacksMatrix(Matrix):
         ast = away_team_skill.strength
         aa = away_team_skill.accuracy
         ap = away_team_skill.pressure
-
-        # Distance probability where distance is 1, 2, or 3
-        dp = 0.5 + (2 - distance) * 0.3
 
         # C0R = RUCK_BOUNCE_STATUS
         # C1R = RUCK_STOPPED_STATUS
@@ -30,7 +27,7 @@ class BacksMatrix(Matrix):
         # ABE = BACKS_AWAY_TEAM_BEHIND_STATUS
         # AGO = BACKS_AWAY_TEAM_GOAL_STATUS
 
-        self.matrix = dict(
+        self.data = dict([
             # [C0R, C1R, C2R, C0M, H1M, H2M, H3M, H4M, A1M, A2M, A3M, A4M, ABE, AGO]
 
             # [C0R, C1R, C2R, C0M,
@@ -51,7 +48,7 @@ class BacksMatrix(Matrix):
                     prob(0.06, hst, 0, ap), prob(0.01, 0, -ha, -ap), 0.01, prob(0.25, hst, ha, ap),
                     prob(0.06, ast, 0, hp), prob(0.01, 0, -aa, -hp), 0.01, prob(0.25, ast, aa, hp),
                     prob_dist(dist, 0.005, ast, 0, hp), prob_dist(dist, 0.005, ast, aa, hp),
-                ], [4, 5, 7, 8, 9, 11, 12, 13]))
+                ], [4, 5, 7, 8, 9, 11, 12, 13])),
             (BACKS_THROW_IN_STATUS,
                 normalise([
                     0, 0, 0.088, 0, 
@@ -92,10 +89,10 @@ class BacksMatrix(Matrix):
             (BACKS_AWAY_TEAM_FREE_KICK_STATUS, 
                 normalise([
                     0, 0, 0, 0,
-                    prob(0.04, 0, -aa, -hp), 0, prob(0.005, 0, 0, -hp), 0
+                    prob(0.04, 0, -aa, -hp), 0, prob(0.005, 0, 0, -hp), 0,
                     prob(0.04, 0, -aa, -ap), prob(0.04, 0, -aa, -hp), prob(0.01, 0, 0, -ap), prob(0.52, ast, aa, hp),
                     prob_dist(dist, 0.05, 0, aa, hp), prob_dist(dist, 0.07, ast, aa, hp)
-                ], [4, 6, 8, 9, 10, 11, 12, 13]),
+                ], [4, 6, 8, 9, 10, 11, 12, 13])),
             (BACKS_AWAY_TEAM_MOVING_STATUS, 
                 normalise([
                     0, 0, 0, prob(0.02, 0, -aa, -hp),
@@ -105,4 +102,4 @@ class BacksMatrix(Matrix):
                 ], [3, 4, 5, 6, 8, 9, 10, 11, 12, 13])),
             (BACKS_AWAY_TEAM_BEHIND_STATUS, [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
             (BACKS_AWAY_TEAM_GOAL_STATUS, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-        )
+        ])

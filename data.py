@@ -27,8 +27,8 @@ class Skills:
     strength: how effective the unit is once they have possesion of the ball (attacking efficiency)
     """
     accuracy: float
-    pressure: float
     strength: float
+    pressure: float
 
 
 @dataclass

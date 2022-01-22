@@ -43,14 +43,6 @@ BACKS_AWAY_TEAM_MOVING_STATUS = FieldStatus(FieldArea.BACKS, Possession.AWAY_TEA
 BACKS_AWAY_TEAM_BEHIND_STATUS = FieldStatus(FieldArea.BACKS, Possession.AWAY_TEAM, BallStatus.BEHIND)
 BACKS_AWAY_TEAM_GOAL_STATUS = FieldStatus(FieldArea.BACKS, Possession.AWAY_TEAM, BallStatus.GOAL)
 
-"""
-Each matrix row has a base probability. Certain elements in the matrix have a dynamic quality:
-the probability is modified depending on the skill.
-
-Each row is then normalised to ensure it adds to 1 (to conform to the Markov property).
-"""
-
-
 def prob(base, strength, accuracy, pressure):
     value = base + base * strength + base * accuracy - base * pressure
     return value if value > 0 else 0
@@ -60,8 +52,9 @@ def prob_dist(dist, base, strength, accuracy, pressure):
     # Skill probability
     p = prob(base, strength, accuracy, pressure)
 
-    # Distance probability
+    # Distance probability where distance is 1, 2, or 3
     d = 1 - 0.4 * (dist - 1)
+    # d = 0.5 + (2 - distance) * 0.3
 
     return p + d * p  
 
@@ -82,7 +75,15 @@ def normalise(row, dynamic_indexes):
     
     return row
 
+# Each matrix row has a base probability. Certain elements in the matrix have a dynamic quality:
+# the probability is modified depending on the skill.
+# Each row is then normalised to ensure it adds to 1 (to conform to the Markov property).
+# The matrix is stored in a dictionary named the `data` field.
 class Matrix:
     @property
     def states(self):
-        return self.matrix.keys()
+        return list(self.data.keys())
+
+    def row(self, state):
+        return self.data[state]
+

@@ -1,4 +1,4 @@
-import matrix
+from matrix import *
 
 class MidFieldMatrix(Matrix):
     def __init__(self, home_team_skill, away_team_skill):
@@ -22,7 +22,7 @@ class MidFieldMatrix(Matrix):
         # A3M = MID_FIELD_AWAY_TEAM_FREE_KICK_STATUS
         # A4M = MID_FIELD_AWAY_TEAM_MOVING_STATUS
 
-        self.matrix = dict(
+        self.data = dict([
             # [C0R, C1R, C2R, C0M, H1M, H2M, H3M, H4M, A1M, A2M, A3M, A4M]
 
             # [C0R, C1R, C2R, C0M,
@@ -41,7 +41,7 @@ class MidFieldMatrix(Matrix):
                     prob(0.06, hst, 0, ap), prob(0.01, 0, -ha, -ap), 0.01, prob(0.25, hst, ha, ap),
                     prob(0.06, ast, 0, hp), prob(0.01, 0, -aa, -hp), 0.01, prob(0.25, ast, aa, hp)
                 ], [4, 5, 7, 8, 9, 11])),
-            (MID_FIELD_THROW_IN_STATUS, [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            (MID_FIELD_THROW_IN_STATUS, [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
             (MID_FIELD_HOME_TEAM_STOPPED_STATUS,
                 normalise([
                     0, 0, 0, 0.01,
@@ -80,5 +80,5 @@ class MidFieldMatrix(Matrix):
                     prob(0.03, 0, -aa, -hp), prob(0.025, 0, -ha, -ap), prob(0.03, hst, 0, -hp), 0,
                     prob(0.03, 0, -ha, -ap), prob(0.025, 0, -aa, -hp), prob(0.04, ast, 0, -hp), prob(0.5, ast, aa, hp)
                 ], [3, 4, 5, 6, 8, 9, 10, 11]))
-        )
+        ])
 

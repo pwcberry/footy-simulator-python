@@ -1,4 +1,4 @@
-import matrix
+from matrix import *
 
 class ForwardsMatrix(Matrix):
     def __init__(self, home_team_skill, away_team_skill, dist):
@@ -24,7 +24,7 @@ class ForwardsMatrix(Matrix):
         # A3M = FORWARDS_AWAY_TEAM_FREE_KICK_STATUS
         # A4M = FORWARDS_AWAY_TEAM_MOVING_STATUS
 
-        self.matrix = dict(
+        self.data = dict([
             # [C0R, C1R, C2R, C0M, H1M, H2M, H3M, H4M, HBE, HGO, A1M, A2M, A3M, A4M]
 
             # [C0R, C1R, C2R, C0M, 
@@ -97,5 +97,5 @@ class ForwardsMatrix(Matrix):
                     0, 0,
                     prob(0.03, 0, -ha, -ap), prob(0.025, 0, -aa, -hp), prob(0.04, ast, 0, -hp), prob(0.5, ast, aa, hp)
                 ], [3, 4, 5, 6, 10, 11, 12, 13]))
-        )
+        ])
 
