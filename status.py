@@ -28,7 +28,7 @@ class Possession(Enum):
     AWAY_TEAM = 1
     IN_CONTENTION = 2
 
-class FieldArea(Enum):
+class FieldZone(Enum):
     RUCK = 0
     FORWARDS = 1
     MID_FIELD = 2
@@ -41,7 +41,7 @@ class AttackDistance(IntEnum):
 
 @dataclass(frozen=True)
 class FieldStatus:
-    field_area: FieldArea
+    field_area: FieldZone
     possession: Possession
     ball_status: BallStatus
 
