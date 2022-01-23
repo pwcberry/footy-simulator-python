@@ -15,17 +15,17 @@ class RuckZoneMatrix(ZoneMatrix):
         # C0 = BOUNCE_STATUS
         # C1 = STOPPED_STATUS
         # C2 = THROW_IN_STATUS
-        # H0 = HOME_TEAM_FREE_KICK_STATUS
-        # H1 = HOME_TEAM_MOVING_STATUS
-        # A0 = AWAY_TEAM_FREE_KICK_STATUS
-        # A1 = AWAY_TEAM_MOVING_STATUS
+        # H1 = HOME_TEAM_FREE_KICK_STATUS
+        # H2 = HOME_TEAM_MOVING_STATUS
+        # A1 = AWAY_TEAM_FREE_KICK_STATUS
+        # A2 = AWAY_TEAM_MOVING_STATUS
 
         self.data = dict([
-            # [C0, C1, C2, H0, H1, A0, A1]
+            # [C0, C1, C2, H1, H2, A1, A2]
 
             # [C0, C1, C2,
-            #  H0, H1,
-            #  A0, A1]
+            #  H1, H2,
+            #  A1, A2]
             (BOUNCE_STATUS,
                 normalise([
                     0, 0.05, 0.05,
