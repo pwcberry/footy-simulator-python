@@ -1,2 +1,4 @@
-# footy-simulator-python
-A command-line simulator of an AFL game.
+# Australian Rules Football simulator
+
+A command-line simulator of an AFL game, written in Python.
+

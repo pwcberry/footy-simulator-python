@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 @dataclass
 class TeamScore:
-    goals: int = 0
-    behinds: int = 0
+    goals = 0
+    behinds = 0
 
     def copy(self):
         return TeamScore(self.goals, self.behinds)
@@ -20,13 +20,15 @@ class Skills:
     """
     The skills that represent a unit within the team.
 
+    For each skill variable, the range is from -0.5 (weak) to 0.5 (strong).
+
     accuracy: how accurate the unit is at moving the ball forward. For forwards, it indicates how accurate they are at kicking goals
-    pressure: how strong the unit is at apply pressure to prevent the ball moving forward
-    strength: how effective the unit is once they have possesion of the ball
+    pressure: how strong the unit is at apply pressure to prevent the ball moving forward (defensive pressure)
+    strength: how effective the unit is once they have possesion of the ball (attacking efficiency)
     """
     accuracy: float
-    pressure: float
     strength: float
+    pressure: float
 
 
 @dataclass
@@ -38,4 +40,4 @@ class Team:
     ruck: Skills
     cohesion: float
     fitness: float
-    health: float = 1
+    health: float = 1.0
