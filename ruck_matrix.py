@@ -44,6 +44,6 @@ class RuckZoneMatrix(ZoneMatrix):
             (HOME_TEAM_FREE_KICK_STATUS, [0, 0, 0, 1, 0, 0, 0]),
             (HOME_TEAM_MOVING_STATUS,    [0, 0, 0, 0, 1, 0, 0]),
             (AWAY_TEAM_FREE_KICK_STATUS, [0, 0, 0, 0, 0, 1, 0]),
-            (AWAY_TEAM_MOVING_STATUS   , [0, 0, 0, 0, 0, 0, 1])
+            (AWAY_TEAM_MOVING_STATUS,    [0, 0, 0, 0, 0, 0, 1])
         ])
 

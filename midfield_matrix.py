@@ -21,7 +21,6 @@ class MidFieldZoneMatrix(ZoneMatrix):
         # A1 = AWAY_TEAM_FREE_KICK_STATUS
         # A2 = AWAY_TEAM_MOVING_STATUS
 
-
         self.data = dict([
             # [C1, C2, H0, H1, H2, A0, A1, A2]
             # [C1, C2,
