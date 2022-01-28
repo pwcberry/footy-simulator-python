@@ -38,6 +38,8 @@ class Team:
     mid_field: Skills
     backs: Skills
     ruck: Skills
-    cohesion: float
-    fitness: float
+
+    # These properties are unused for now
+    cohesion: float = 1.0
+    fitness: float = 1.0
     health: float = 1.0
