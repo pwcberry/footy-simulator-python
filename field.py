@@ -1,57 +1,5 @@
-import math
 from random import random
-from enum import Enum
-from data import Team
-from status import BallStatus, FieldZone, Possession
-
-class BallDirection(Enum):
-    NONE = 0
-    FORWARD = 1
-    BACKWARD = 2
-    LATERAL = 3
-
-def get_contest_winner(min, midpoint, home_skill, away_skill):
-    nbr = random()
-
-    if nbr < min:
-        return Possession.IN_CONTENTION
-
-    if home_skill + away_skill >= 1:
-        diff = home_skill - away_skill
-        limit = midpoint + diff
-        return Possession.HOME_TEAM if nbr <= limit else Possession.AWAY_TEAM
-
-    counter = 1
-    status = Possession.IN_CONTENTION
-    min = home_skill + away_skill
-
-    while counter <= 3 and status == Possession.IN_CONTENTION:
-        if nbr <= home_skill:
-            status = Possession.HOME_TEAM
-        elif nbr > home_skill and nbr <= min:
-            status = Possession.AWAY_TEAM
-        else:
-            nbr = random()
-            counter += 1
-    
-    return status
-
-def get_status_after_stopped_ball():
-    nbr = random()
-    return Status.BOUNCE if nbr < 0.5 else Status.THROW_IN
-
-def get_ball_direction(min, midpoint, attack_strength, defense_strength):
-    nbr = random()
-
-    if nbr < min:
-        return BallDirection.LATERAL
-
-    if attack_strength + defense_strength >= 1:
-        diff = attack_strength - defense_strength
-        limit = midpoint + diff
-        return BallDirection.FORWARD if nbr <= limit else BallDirection.BACKWARD
-
-    return BallDirection.FORWARD if attack_strength > defense_strength else BallDirection.BACKWARD            
+from status import BallStatus, FieldZone, FieldStatus, Possession  
 
 class Field:
     def __init__(self, home_team, away_team):

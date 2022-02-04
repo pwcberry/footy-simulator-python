@@ -1,6 +1,5 @@
-import random
 from math import fsum
-from status import BallStatus, Possession, FieldZone, FieldStatus
+from status import BallStatus, Possession, FieldStatus
 
 BOUNCE_STATUS = FieldStatus(Possession.IN_CONTENTION, BallStatus.BOUNCE)
 STOPPED_STATUS = FieldStatus(Possession.IN_CONTENTION, BallStatus.STOPPED)

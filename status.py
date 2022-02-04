@@ -23,6 +23,12 @@ class BallStatus(Enum):
     BEHIND = 6
     GOAL = 7
 
+class BallDirection(Enum):
+    NONE = 0
+    FORWARD = 1
+    BACKWARD = 2
+    LATERAL = 3    
+
 class Possession(Enum):
     HOME_TEAM = 0
     AWAY_TEAM = 1
