@@ -118,9 +118,22 @@ class TestMatrixNormaliseFunction(unittest.TestCase):
         dynamic_indexes = [3, 4]
         result = normalise(vector, dynamic_indexes)
 
-        #rounding errors
+        # rounding errors
         self.assertAlmostEqual(result[3], 0.325)
         self.assertAlmostEqual(result[4], 0.575)
+
+    def test_vector_is_changed_when_all_items_are_dynamic(self):
+        vector = [0.1, 0.6, 0.05, 0.05]
+        dynamic_indexes = [0, 1, 2, 3]
+        
+        result = normalise(vector, dynamic_indexes)
+        
+        # rounding errors
+        self.assertAlmostEqual(result[0], 0.15)
+        self.assertAlmostEqual(result[1], 0.65)
+        self.assertAlmostEqual(result[2], 0.1)
+        self.assertAlmostEqual(result[3], 0.1)
+
 
 
 if __name__ == "__main__":

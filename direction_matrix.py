@@ -5,12 +5,12 @@ class DirectionMatrix(ZoneMatrix):
     def __init__(self, field_zone):
         super().__init__(field_zone)
 
-        self.data[Possession.IN_CONTENTION] = dict(
+        self.data[Possession.IN_CONTENTION] = dict([
             (BallDirection.NONE, [1, 0, 0, 0]),
             (BallDirection.FORWARD, [1, 0, 0, 0]),
             (BallDirection.BACKWARD, [1, 0, 0, 0]),
             (BallDirection.LATERAL, [1, 0, 0, 0])
-        )
+        ])
 
     @property
     def states(self):

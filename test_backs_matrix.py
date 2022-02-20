@@ -2,7 +2,7 @@ import unittest
 from matrix import *
 from data import Skills
 from backs_matrix import BacksMatrix
-from status import AttackDistance
+from status import AttackDistance, FieldZone
 
 class TestBacksMatrix(unittest.TestCase):
     def setUp(self):
@@ -14,6 +14,10 @@ class TestBacksMatrix(unittest.TestCase):
         ]
         self.home_team = Skills(0.75, 0.625, 0.8)
         self.away_team = Skills(0.8, 0.75, 0.8)
+
+    def test_zone_returns_expected_field_zone(self):
+        matrix = BacksMatrix(self.home_team, self.away_team, AttackDistance.TWENTY_METRES)
+        self.assertEqual(matrix.zone, FieldZone.BACKS)
 
     def test_states_returns_expected_list(self):
         matrix = BacksMatrix(self.home_team, self.away_team, AttackDistance.GOAL_SQUARE)
