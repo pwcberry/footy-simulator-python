@@ -1,6 +1,5 @@
 import sys
 from random import random
-from collections import namedtuple
 from status import BallStatus, GameScore, GameStatus, Timer
 from field import Field
 from logger import GameLog
@@ -24,10 +23,6 @@ from logger import GameLog
 # - https://en.wikipedia.org/wiki/Monte_Carlo_method
 
 
-MAX_X = 2
-MAX_Y = 6
-
-Position = namedtuple("Position", ["x", "y"])
 
 
 class Game:
