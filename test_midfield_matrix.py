@@ -1,6 +1,7 @@
 import unittest
 from matrix import *
 from data import Skills
+from status import FieldZone
 from midfield_matrix import MidFieldZoneMatrix
 
 class TestMidFieldZoneMatrix(unittest.TestCase):
@@ -12,6 +13,10 @@ class TestMidFieldZoneMatrix(unittest.TestCase):
         ]
         self.home_team = Skills(0.75, 0.625, 0.8)
         self.away_team = Skills(0.8, 0.75, 0.8)
+
+    def test_zone_returns_expected_field_zone(self):
+        matrix = MidFieldZoneMatrix(self.home_team, self.away_team)
+        self.assertEqual(matrix.zone, FieldZone.MID_FIELD)
 
     def test_states_returns_expected_list(self):
         matrix = MidFieldZoneMatrix(self.home_team, self.away_team)

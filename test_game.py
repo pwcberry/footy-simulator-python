@@ -1,5 +1,6 @@
-from unittest import TestCase
+import unittest
+from game import Game
 
-class TestGame(TestCase):
+class TestGame(unittest.TestCase):
     def test_hello_world(self):
-        self.fail()
+        self.assertEqual("hello", "hello")

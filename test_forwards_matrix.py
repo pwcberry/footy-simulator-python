@@ -2,7 +2,7 @@ import unittest
 from matrix import *
 from data import Skills
 from forwards_matrix import ForwardsMatrix
-from status import AttackDistance
+from status import AttackDistance, FieldZone
 
 class TestForwardsMatrix(unittest.TestCase):
     def setUp(self):
@@ -14,6 +14,10 @@ class TestForwardsMatrix(unittest.TestCase):
         ]
         self.home_team = Skills(0.75, 0.625, 0.8)
         self.away_team = Skills(0.8, 0.75, 0.8)
+
+    def test_zone_returns_expected_field_zone(self):
+        matrix = ForwardsMatrix(self.home_team, self.away_team, AttackDistance.FIFTY_METRES)
+        self.assertEqual(matrix.zone, FieldZone.FORWARDS)
 
     def test_states_returns_expected_list(self):
         matrix = ForwardsMatrix(self.home_team, self.away_team, AttackDistance.GOAL_SQUARE)

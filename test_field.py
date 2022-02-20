@@ -1,25 +1,31 @@
 import unittest
 from field import Field
 from data import Team, Skills
-from status import BallStatus, Possession
+from status import BallStatus, FieldZone, Possession
 
 class TestField(unittest.TestCase):
     def setUp(self):
-        self.team_a = Team("AAA", 
+        self.team_a = Team(
+            # name
+            "AAA", 
+
+            # forwards
             Skills(0.5, 0.5, 0.5), 
+
+            # mid_field
             Skills(0.5, 0.5, 0.5), 
+
+            # backs
             Skills(0.5, 0.5, 0.5), 
+
+            # ruck
             Skills(0.5, 0.5, 0.5),
-            0.5,
-            0.8
         )
         self.team_b = Team("BBB", 
             Skills(0.5, 0.5, 0.5), 
             Skills(0.5, 0.5, 0.5), 
             Skills(0.5, 0.5, 0.5), 
             Skills(0.5, 0.5, 0.5),
-            0.5,
-            0.8
         )
 
     def test_init(self):
@@ -29,7 +35,7 @@ class TestField(unittest.TestCase):
         self.assertEqual(f.ball_status, BallStatus.BOUNCE)
         self.assertEqual(f.teams[0], self.team_a)
         self.assertEqual(f.teams[1], self.team_b)
-        self.assertEqual(f.in_attack, Possession.IN_CONTENTION)
+        self.assertEqual(f.possession, Possession.IN_CONTENTION)
 
     def test_set_position(self):
         f = Field(self.team_a, self.team_b)
@@ -51,50 +57,47 @@ class TestField(unittest.TestCase):
         f.centre_ball()
         self.assertEqual(f.position, 5)
         self.assertEqual(f.ball_status, BallStatus.BOUNCE)
-        self.assertEqual(f.in_attack, Possession.IN_CONTENTION)
+        self.assertEqual(f.possession, Possession.IN_CONTENTION)
 
-    def test_get_active_skill_at_bounce(self):
+    def test_get_field_zone_at_bounce(self):
         f = Field(self.team_a, self.team_b)
+        zone = f.get_field_zone()
+        self.assertEqual(zone, FieldZone.RUCK)
 
-        skill = f.get_active_home_team_skill()
-        self.assertEqual(skill, "ruck")
-
-    def test_get_active_skill_when_moving(self):
+    def test_get_field_zone_when_moving(self):
         f = Field(self.team_a, self.team_b)
         f.ball_status = BallStatus.MOVING
 
         f.set_position(1)
-        skill = f.get_active_home_team_skill()
-        self.assertEqual(skill, "forwards")
+        zone = f.get_field_zone()
+        self.assertEqual(zone, FieldZone.FORWARDS)
 
         f.set_position(3)
-        skill = f.get_active_home_team_skill()
-        self.assertEqual(skill, "forwards")
+        zone = f.get_field_zone()
+        self.assertEqual(zone, FieldZone.FORWARDS)
 
         f.set_position(4)
-        skill = f.get_active_home_team_skill()
-        self.assertEqual(skill, "mid_field")
+        zone = f.get_field_zone()
+        self.assertEqual(zone, FieldZone.MID_FIELD)
 
         f.set_position(6)
-        skill = f.get_active_home_team_skill()
-        self.assertEqual(skill, "mid_field")
+        zone = f.get_field_zone()
+        self.assertEqual(zone, FieldZone.MID_FIELD)
 
         f.set_position(7)
-        skill = f.get_active_home_team_skill()
-        self.assertEqual(skill, "backs")
+        zone = f.get_field_zone()
+        self.assertEqual(zone, FieldZone.BACKS)
 
         f.set_position(9)
-        skill = f.get_active_home_team_skill()
-        self.assertEqual(skill, "backs")
+        zone = f.get_field_zone()
+        self.assertEqual(zone, FieldZone.BACKS)
 
-    def test_get_active_skill_when_ball_is_thrown_in(self):
+    def test_get_field_zone_when_ball_is_thrown_in(self):
         f = Field(self.team_a, self.team_b)
         f.ball_status = BallStatus.THROW_IN
         f.set_position(6)
-
-        skill = f.get_active_home_team_skill()
-
-        self.assertEqual(skill, "ruck")
+        zone = f.get_field_zone()
+        self.assertEqual(zone, FieldZone.RUCK)
 
 
 

@@ -1,4 +1,4 @@
-from football.data import Skills
+from data import Skills
 from data import Team
 from game import Game
 
