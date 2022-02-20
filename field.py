@@ -63,9 +63,16 @@ class Field:
             if self.position.x > FIELD_MIN_X:
                 self.position = Position(self.position.x - 1, self.position.y)
 
-    def move_lateral(self, direction):
-        pass
-        # if self.possession == Possession.HOME_TEAM:
-        #     if direction == LateralDirection.LEFT:
+    def move_laterally(self, direction):
+        if self.possession == Possession.HOME_TEAM:
+            if (direction == LateralDirection.LEFT) and (self.position.y < FIELD_MAX_Y):
+                self.position = Position(self.position.x, self.position.y + 1)
+            elif (direction == LateralDirection.RIGHT) and (self.position.y > FIELD_MIN_Y):
+                self.position = Position(self.position.x, self.position.y - 1)
+        elif self.possession == Possession.AWAY_TEAM:
+            if (direction == LateralDirection.LEFT) and (self.position.y > FIELD_MIN_Y):
+                self.position = Position(self.position.x, self.position.y - 1)
+            elif (direction == LateralDirection.RIGHT) and (self.position.y < FIELD_MAX_Y):
+                self.position = Position(self.position.x, self.position.y + 1)
 
 

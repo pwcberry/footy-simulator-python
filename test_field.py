@@ -1,7 +1,7 @@
 import unittest
 from field import *
 from data import Team, Skills
-from status import BallStatus, FieldZone, Possession
+from status import BallStatus, FieldZone, LateralDirection, Possession
 
 class TestField(unittest.TestCase):
     def setUp(self):
@@ -211,6 +211,70 @@ class TestField(unittest.TestCase):
         f.move_backward()
         self.assertEqual(f.position.x, FIELD_MAX_X - 1)
         self.assertEqual(f.position.y, FIELD_CENTER_Y)
+
+    # Move laterally - HOME_TEAM
+
+    def test_move_laterally_when_possession_is_home_team_and_in_field_center_and_move_left(self):
+        f = Field(self.team_a, self.team_b)
+        f.possession = Possession.HOME_TEAM
+        f.move_laterally(LateralDirection.LEFT)
+        self.assertEqual(f.position.x, FIELD_CENTER_X)
+        self.assertEqual(f.position.y, FIELD_CENTER_Y + 1)
+
+    def test_move_laterally_when_possession_is_home_team_and_in_field_center_and_move_right(self):
+        f = Field(self.team_a, self.team_b)
+        f.possession = Possession.HOME_TEAM
+        f.move_laterally(LateralDirection.RIGHT)
+        self.assertEqual(f.position.x, FIELD_CENTER_X)
+        self.assertEqual(f.position.y, FIELD_CENTER_Y - 1)
+        
+    def test_move_laterally_when_possession_is_home_team_and_at_left_side_and_move_left(self):
+        f = Field(self.team_a, self.team_b)
+        f.possession = Possession.HOME_TEAM
+        f.set_position(Position(FIELD_CENTER_X, FIELD_MAX_Y))
+        f.move_laterally(LateralDirection.LEFT)
+        self.assertEqual(f.position.x, FIELD_CENTER_X)
+        self.assertEqual(f.position.y, FIELD_MAX_Y)
+
+    def test_move_laterally_when_possession_is_home_team_and_at_right_side_and_move_right(self):
+        f = Field(self.team_a, self.team_b)
+        f.possession = Possession.HOME_TEAM
+        f.set_position(Position(FIELD_CENTER_X, FIELD_MIN_Y))
+        f.move_laterally(LateralDirection.RIGHT)
+        self.assertEqual(f.position.x, FIELD_CENTER_X)
+        self.assertEqual(f.position.y, FIELD_MIN_Y)
+
+    # Move laterally - AWAY_TEAM
+
+    def test_move_laterally_when_possession_is_away_team_and_in_field_center_and_move_left(self):
+        f = Field(self.team_a, self.team_b)
+        f.possession = Possession.AWAY_TEAM
+        f.move_laterally(LateralDirection.LEFT)
+        self.assertEqual(f.position.x, FIELD_CENTER_X)
+        self.assertEqual(f.position.y, FIELD_CENTER_Y - 1)
+
+    def test_move_laterally_when_possession_is_away_team_and_in_field_center_and_move_right(self):
+        f = Field(self.team_a, self.team_b)
+        f.possession = Possession.AWAY_TEAM
+        f.move_laterally(LateralDirection.RIGHT)
+        self.assertEqual(f.position.x, FIELD_CENTER_X)
+        self.assertEqual(f.position.y, FIELD_CENTER_Y + 1)
+        
+    def test_move_laterally_when_possession_is_away_team_and_at_left_side_and_move_left(self):
+        f = Field(self.team_a, self.team_b)
+        f.possession = Possession.AWAY_TEAM
+        f.set_position(Position(FIELD_CENTER_X, FIELD_MIN_Y))
+        f.move_laterally(LateralDirection.LEFT)
+        self.assertEqual(f.position.x, FIELD_CENTER_X)
+        self.assertEqual(f.position.y, FIELD_MIN_Y)
+
+    def test_move_laterally_when_possession_is_away_team_and_at_right_side_and_move_right(self):
+        f = Field(self.team_a, self.team_b)
+        f.possession = Possession.AWAY_TEAM
+        f.set_position(Position(FIELD_CENTER_X, FIELD_MAX_Y))
+        f.move_laterally(LateralDirection.RIGHT)
+        self.assertEqual(f.position.x, FIELD_CENTER_X)
+        self.assertEqual(f.position.y, FIELD_MAX_Y)
         
 
 if __name__ == "__main__":
