@@ -75,4 +75,9 @@ class Field:
             elif (direction == LateralDirection.RIGHT) and (self.position.y < FIELD_MAX_Y):
                 self.position = Position(self.position.x, self.position.y + 1)
 
-
+    def switch_possession(self):
+        if self.possession == Possession.HOME_TEAM:
+            self.possession = Possession.AWAY_TEAM
+        elif self.possession == Possession.AWAY_TEAM:
+            self.possession = Possession.HOME_TEAM
+    

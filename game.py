@@ -1,8 +1,8 @@
 import sys
 from random import random
-from status import BallStatus, GameScore, GameStatus, Timer
-from field import Field
+from status import BallStatus, GameScore, GameStatus, Timer, Possession
 from logger import GameLog
+import field
 
 # Their rating for defence: in preventing scores and moving the ball to the mid-field
 # Their rating for mid-field: retaining the ball and moving to the forward line
@@ -22,16 +22,25 @@ from logger import GameLog
 # - https://en.wikipedia.org/wiki/Stochastic_matrix (Transition Matrix)
 # - https://en.wikipedia.org/wiki/Monte_Carlo_method
 
-
-
-
 class Game:
     def __init__(self, home_team, away_team, log_output = sys.stdout):
-        self.field = Field(home_team, away_team)
+        self.field = field.Field(home_team, away_team)
         self.status = GameStatus.NOT_STARTED
         self.score = GameScore(home_team.name, away_team.name)
         self.logger = GameLog(log_output)
         self.timer = Timer()
+        self.home_team = home_team
+        self.away_team = away_team
+
+    @property
+    def team_in_attack(self):
+        if self.field.possession == Possession.HOME_TEAM:
+            return self.home_team
+        elif self.field.possession == Possession.AWAY_TEAM:
+            return self.away_team
+        else:
+            return None
+
 
     def play_quarter(self):
         if self.status == GameStatus.FULL_TIME:
@@ -39,11 +48,11 @@ class Game:
             return
         elif self.status == GameStatus.NOT_STARTED:
             self.status = GameStatus.FIRST_QUARTER
-        elif self.status == GameStatus.FIRST_QUARTER:
+        elif self.status == GameStatus.QUARTER_TIME:
             self.status = GameStatus.SECOND_QUARTER
-        elif self.status == GameStatus.SECOND_QUARTER:
+        elif self.status == GameStatus.HALF_TIME:
             self.status = GameStatus.THIRD_QUARTER
-        elif self.status == GameStatus.THIRD_QUARTER:
+        elif self.status == GameStatus.THREE_QUARTER_TIME:
             self.status = GameStatus.FOURTH_QUARTER
 
         self.timer.reset()
@@ -66,31 +75,37 @@ class Game:
         self.logger.log_full_score(self.score)          
 
         if self.status == GameStatus.FULL_TIME:
+            self.score.set_status(GameStatus.FULL_TIME)
             self.log_result()
 
     def play(self):
         while not self.timer.is_end_of_quarter():
             self.timer.tick()
-            ball_status, team_in_attack = self.field.generate_snapshot()
+            
 
-            if ball_status == BallStatus.GOAL:
-                self.score_goal(team_in_attack)
-            elif ball_status == BallStatus.BEHIND:
-                self.score_behind(team_in_attack)
+
+            if self.field.ball_status == BallStatus.GOAL:
+                self.score_goal()
+            elif self.field.ball_status == BallStatus.BEHIND:
+                self.score_behind()
 
 
     def score_goal(self, team):
+        team = self.team_in_attack
         self.score.score_goal(team.name)
         self.logger.log_message(self.timer, "{}: GOAL!".format(team.name))
         self.logger.log_short_score(self.timer, self.score)
-        self.reset_field()
+        self.field.centre_ball()
 
     def score_behind(self, team):
+        team = self.team_in_attack
         self.score.score_behind(team.name)
         self.logger.log_message(self.timer, "{}: Behind".format(team.name))
+        self.field.switch_possession()
 
     def log_result(self):
-        team_scores = [(team, score.total()) for team, score in self.score.get_final_score()]
+        final_score = self.score.get_final_score()
+        team_scores = [(team, score.total()) for team, score in final_score.items()]
         margin = abs(team_scores[0][1] - team_scores[1][1])
         
         if margin > 0:
