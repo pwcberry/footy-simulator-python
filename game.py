@@ -1,7 +1,7 @@
 import sys
-from random import random
-from status import BallStatus, GameScore, GameStatus, Timer, Possession
+from status import BallStatus, GameScore, GameStatus, LateralDirection, Timer, Possession
 from logger import GameLog
+from game_matrix import GameMatrix
 import field
 
 # Their rating for defence: in preventing scores and moving the ball to the mid-field
@@ -31,6 +31,8 @@ class Game:
         self.timer = Timer()
         self.home_team = home_team
         self.away_team = away_team
+        self.lateral_direction = LateralDirection.NONE
+        self.game_matrix = GameMatrix(home_team, away_team)
 
     @property
     def team_in_attack(self):

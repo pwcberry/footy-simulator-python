@@ -1,10 +1,10 @@
 import unittest
 from matrix import *
 from data import Skills
-from forwards_matrix import ForwardsMatrix
+from forwards_matrix import ForwardsZoneMatrix
 from status import AttackDistance, FieldZone
 
-class TestForwardsMatrix(unittest.TestCase):
+class TestForwardsZoneMatrix(unittest.TestCase):
     def setUp(self):
         self.states = [
             BOUNCE_STATUS, STOPPED_STATUS, THROW_IN_STATUS,
@@ -16,16 +16,16 @@ class TestForwardsMatrix(unittest.TestCase):
         self.away_team = Skills(0.8, 0.75, 0.8)
 
     def test_zone_returns_expected_field_zone(self):
-        matrix = ForwardsMatrix(self.home_team, self.away_team, AttackDistance.FIFTY_METRES)
+        matrix = ForwardsZoneMatrix(self.home_team, self.away_team, AttackDistance.FIFTY_METRES)
         self.assertEqual(matrix.zone, FieldZone.FORWARDS)
 
     def test_states_returns_expected_list(self):
-        matrix = ForwardsMatrix(self.home_team, self.away_team, AttackDistance.GOAL_SQUARE)
+        matrix = ForwardsZoneMatrix(self.home_team, self.away_team, AttackDistance.GOAL_SQUARE)
         self.assertEqual(len(matrix.states), len(self.states))
         self.assertEqual(matrix.states, self.states)
 
     def test_data_shape_is_consistent(self):
-        matrix = ForwardsMatrix(self.home_team, self.away_team, AttackDistance.GOAL_SQUARE)
+        matrix = ForwardsZoneMatrix(self.home_team, self.away_team, AttackDistance.GOAL_SQUARE)
         matrix_states = matrix.states
         count = len(matrix_states)
 
@@ -34,7 +34,7 @@ class TestForwardsMatrix(unittest.TestCase):
             self.assertEqual(len(v), count)
 
     def test_data_each_row_is_normalised(self):
-        matrix = ForwardsMatrix(self.home_team, self.away_team, AttackDistance.GOAL_SQUARE)
+        matrix = ForwardsZoneMatrix(self.home_team, self.away_team, AttackDistance.GOAL_SQUARE)
 
         for s in matrix.states:
             r = matrix.row(s)

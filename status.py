@@ -30,8 +30,9 @@ class BallDirection(Enum):
     LATERAL = 3
 
 class LateralDirection(Enum):
-    LEFT = 0
-    RIGHT = 1
+    NONE = 0
+    LEFT = 1
+    RIGHT = 2
 
 class Possession(Enum):
     HOME_TEAM = 0
