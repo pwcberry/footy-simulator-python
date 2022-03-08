@@ -1,7 +1,7 @@
 import sys
-from status import BallStatus, GameScore, GameStatus, LateralDirection, Timer, Possession
 from logger import GameLog
 from game_matrix import GameMatrix
+import status
 import field
 
 # Their rating for defence: in preventing scores and moving the ball to the mid-field
@@ -31,7 +31,7 @@ class Game:
         self.timer = Timer()
         self.home_team = home_team
         self.away_team = away_team
-        self.lateral_direction = LateralDirection.NONE
+        self.ball_direction = BallDirection.NONE
         self.game_matrix = GameMatrix(home_team, away_team)
 
     @property
@@ -84,7 +84,21 @@ class Game:
         while not self.timer.is_end_of_quarter():
             self.timer.tick()
             
+            field_status, ball_direction, lateral_direction = self.game_matrix.new_state(
+                self.field.field_status,
+                self.field.position,
+                self.ball_direction
+            )
 
+            self.field.field_status = field_status
+            self.ball_direction = ball_direction
+
+            if ball_direction = BallDirection.FORWARD:
+                self.field.move_forward()
+            elif ball_direction = BallDirection.BACKWARD:
+                self.field.move_backward()
+            elif ball_direction == BallDirection.LATERAL and (lateral_direction != LateralDirection.NONE):
+                self.field.move_laterally(lateral_direction)
 
             if self.field.ball_status == BallStatus.GOAL:
                 self.score_goal()

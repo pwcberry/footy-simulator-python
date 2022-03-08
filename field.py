@@ -19,6 +19,11 @@ class Field:
     def field_status(self):
         return FieldStatus(self.possession, self.ball_status)
 
+    @field_status.setter
+    def field_status(self, value):
+        self.possession = value.possession
+        self.ball_status = value.ball_status
+
     def set_position(self, new_position):
         if new_position.x < FIELD_MIN_X:
             new_position = Position(FIELD_MIN_X, new_position.y)
