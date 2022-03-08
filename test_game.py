@@ -56,8 +56,7 @@ class TestGame(unittest.TestCase):
         game.play_quarter()
 
         self.assertEqual(game.status, GameStatus.HALF_TIME)
-        game.play.assert_called()
-        output.write.assert_called()
+        self.assertEqual(game.play.call_count, 2)
 
     def test_play_quarter_third_quarter(self):
         output = MagicMock(name="LogOutput")
@@ -69,8 +68,7 @@ class TestGame(unittest.TestCase):
         game.play_quarter()
 
         self.assertEqual(game.status, GameStatus.THREE_QUARTER_TIME)
-        game.play.assert_called()
-        output.write.assert_called()
+        self.assertEqual(game.play.call_count, 3)
 
     def test_play_quarter_fourth_quarter(self):
         output = MagicMock(name="LogOutput")
@@ -83,8 +81,7 @@ class TestGame(unittest.TestCase):
         game.play_quarter()
 
         self.assertEqual(game.status, GameStatus.FULL_TIME)
-        game.play.assert_called()
-        output.write.assert_called()
+        self.assertEqual(game.play.call_count, 4)
 
 
 
