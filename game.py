@@ -1,7 +1,7 @@
 import sys
 from logger import GameLog
 from game_matrix import GameMatrix
-import status
+from status import *
 import field
 
 # Their rating for defence: in preventing scores and moving the ball to the mid-field
@@ -83,8 +83,9 @@ class Game:
     def play(self):
         while not self.timer.is_end_of_quarter():
             self.timer.tick()
-            
-            field_status, ball_direction, lateral_direction = self.game_matrix.new_state(
+            self.log_tick()
+
+            field_status, ball_direction, lateral_direction = self.game_matrix.next_state(
                 self.field.field_status,
                 self.field.position,
                 self.ball_direction
@@ -93,9 +94,9 @@ class Game:
             self.field.field_status = field_status
             self.ball_direction = ball_direction
 
-            if ball_direction = BallDirection.FORWARD:
+            if ball_direction == BallDirection.FORWARD:
                 self.field.move_forward()
-            elif ball_direction = BallDirection.BACKWARD:
+            elif ball_direction == BallDirection.BACKWARD:
                 self.field.move_backward()
             elif ball_direction == BallDirection.LATERAL and (lateral_direction != LateralDirection.NONE):
                 self.field.move_laterally(lateral_direction)
@@ -106,18 +107,28 @@ class Game:
                 self.score_behind()
 
 
-    def score_goal(self, team):
+    def log_tick(self):
+        possession = self.field.field_status.possession
+        ball_status = self.field.field_status.ball_status
+        zone = self.field.field_zone
+        direction = self.ball_direction
+        self.logger.log_message(self.timer, "{}, {}, {}, {}".format(possession, ball_status, zone, direction))
+
+
+    def score_goal(self):
         team = self.team_in_attack
         self.score.score_goal(team.name)
         self.logger.log_message(self.timer, "{}: GOAL!".format(team.name))
         self.logger.log_short_score(self.timer, self.score)
         self.field.centre_ball()
+        self.ball_direction = BallDirection.NONE
 
-    def score_behind(self, team):
+    def score_behind(self):
         team = self.team_in_attack
         self.score.score_behind(team.name)
         self.logger.log_message(self.timer, "{}: Behind".format(team.name))
-        self.field.switch_possession()
+        self.field.switch_possession(BallStatus.FREE_KICK)
+        self.ball_direction = BallDirection.FORWARD
 
     def log_result(self):
         final_score = self.score.get_final_score()
@@ -126,8 +137,8 @@ class Game:
         
         if margin > 0:
             winning_team = team_scores[0][0] if team_scores[0][1] > team_scores[1][1] else team_scores[1][0]
-            result = "\n{} WON by {} points\n".format(winning_team, margin)
-            self.logger.log_message(self.timer, result)
+            result = "{} WON by {} points".format(winning_team, margin)
+            self.logger.log_result(result)
         else:
-            self.logger.log_message(self.timer, "\nDRAW\n")
+            self.logger.log_result("DRAW")
     

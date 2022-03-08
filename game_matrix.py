@@ -31,11 +31,11 @@ class GameMatrix:
 
     def next_state(self, field_status, field_position, ball_direction):
         if field_status.possession != Possession.IN_CONTENTION:
-            if field_position <= 3:
-                matrix = self.forwards[field_position - FIELD_MIN_X]
+            if field_position.x <= 3:
+                matrix = self.forwards[field_position.x - FIELD_MIN_X]
                 direction_matrix = self.forwards_direction
-            elif field_position >= 7:
-                matrix = self.backs[FIELD_MAX_X - field_position]
+            elif field_position.x >= 7:
+                matrix = self.backs[FIELD_MAX_X - field_position.x]
                 direction_matrix = self.backs_direction
             else:
                 matrix = self.midfield
@@ -45,16 +45,19 @@ class GameMatrix:
             direction_matrix = None
 
         probabilities = matrix.row(field_status)
-        new_field_status = self.rng.choice(matrix.states, 1, p = probabilities)
+        arr = self.rng.choice(matrix.states, 1, p = probabilities)
+        new_field_status = arr.item(0)
 
         if direction_matrix != None:
             probabilities = direction_matrix.row(ball_direction, field_status.possession)
-            new_ball_direction = self.rng.choice(matrix.states, 1, p = probabilities)
+            arr = self.rng.choice(direction_matrix.states, 1, p = probabilities)
+            new_ball_direction = arr.item(0)
         else:
             new_ball_direction = BallDirection.NONE
 
         if new_ball_direction == BallDirection.LATERAL:
-            lateral_direction = self.rng.choice([LateralDirection.LEFT, LateralDirection.RIGHT], 1, p = [0.5, 0.5])
+            arr = self.rng.choice([LateralDirection.LEFT, LateralDirection.RIGHT], 1, p = [0.5, 0.5])
+            lateral_direction = arr.item(0)
         else:
             lateral_direction = LateralDirection.NONE
 

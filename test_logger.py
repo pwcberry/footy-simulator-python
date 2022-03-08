@@ -58,6 +58,17 @@ class TestGameLog(unittest.TestCase):
         # Assert
         self.assertEqual(buffer.content, "00:00 - GOAL!\n")
 
+    def test_log_result(self):
+        # Arrange
+        buffer = MockBuffer()
+        logger = GameLog(buffer)
+
+        # Act
+        logger.log_result("DRAW")
+
+        # Assert
+        self.assertEqual(buffer.content, "\nRESULT: DRAW\n\n")
+
 
 if __name__ == "__main__":
     unittest.main()

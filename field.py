@@ -24,6 +24,17 @@ class Field:
         self.possession = value.possession
         self.ball_status = value.ball_status
 
+    @property
+    def field_zone(self):
+        if self.ball_status == BallStatus.BOUNCE or self.ball_status == BallStatus.THROW_IN:
+            return FieldZone.RUCK
+        elif self.position.x in [1, 2, 3]:
+            return FieldZone.FORWARDS
+        elif self.position.x in [4, 5, 6]:
+            return FieldZone.MID_FIELD
+        else:
+            return FieldZone.BACKS
+
     def set_position(self, new_position):
         if new_position.x < FIELD_MIN_X:
             new_position = Position(FIELD_MIN_X, new_position.y)
@@ -41,16 +52,6 @@ class Field:
         self.position = Position(FIELD_CENTER_X, FIELD_CENTER_Y)
         self.ball_status = BallStatus.BOUNCE
         self.possession = Possession.IN_CONTENTION
-
-    def get_field_zone(self):
-        if self.ball_status == BallStatus.BOUNCE or self.ball_status == BallStatus.THROW_IN:
-            return FieldZone.RUCK
-        elif self.position.x in [1, 2, 3]:
-            return FieldZone.FORWARDS
-        elif self.position.x in [4, 5, 6]:
-            return FieldZone.MID_FIELD
-        else:
-            return FieldZone.BACKS
 
     def move_forward(self):
         if self.possession == Possession.HOME_TEAM:
@@ -80,9 +81,10 @@ class Field:
             elif (direction == LateralDirection.RIGHT) and (self.position.y < FIELD_MAX_Y):
                 self.position = Position(self.position.x, self.position.y + 1)
 
-    def switch_possession(self):
+    def switch_possession(self, ball_status):
         if self.possession == Possession.HOME_TEAM:
             self.possession = Possession.AWAY_TEAM
         elif self.possession == Possession.AWAY_TEAM:
             self.possession = Possession.HOME_TEAM
-    
+        
+        self.ball_status = ball_status
