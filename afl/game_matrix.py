@@ -1,14 +1,7 @@
-from random import random
-from status import AttackDistance, BallDirection, LateralDirection, Possession
-from ruck_matrix import RuckZoneMatrix
-from backs_matrix import BacksZoneMatrix
-from backs_direction_matrix import BacksDirectionMatrix
-from midfield_matrix import MidFieldZoneMatrix
-from midfield_direction_matrix import MidfieldDirectionMatrix
-from forwards_matrix import ForwardsZoneMatrix
-from forwards_direction_matrix import ForwardsDirectionMatrix
-from field import FIELD_MAX_X, FIELD_MIN_X
 import numpy
+from .status import AttackDistance, BallDirection, LateralDirection, Possession
+from .field import FIELD_MAX_X, FIELD_MIN_X
+from afl.matrix import BacksDirectionMatrix, BacksZoneMatrix, ForwardsDirectionMatrix, ForwardsZoneMatrix, MidfieldDirectionMatrix, MidFieldZoneMatrix, RuckZoneMatrix
 
 class GameMatrix:
     def __init__(self, home_team, away_team):
