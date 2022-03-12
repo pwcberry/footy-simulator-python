@@ -2,7 +2,8 @@ import numpy as np
 import unittest
 from unittest.mock import patch
 
-from .context import afl, data as d, status as s
+from .context import FIELD_CENTER_X, FIELD_CENTER_Y,FIELD_MAX_X, FIELD_MIN_X, GameMatrix, Position
+from .context import data as d, status as s
 
 class TestGameMatrix(unittest.TestCase):
     def setUp(self):
@@ -35,8 +36,8 @@ class TestGameMatrix(unittest.TestCase):
             mock_rng.choice.side_effect = self.set_numpy_side_effect(s.HOME_TEAM_MOVING_STATUS, s.BallDirection.NONE, s.LateralDirection.NONE)
 
             field_status = s.FieldStatus(s.Possession.IN_CONTENTION, s.BallStatus.BOUNCE)
-            position = afl.Position(x = afl.FIELD_CENTER_X, y = afl.FIELD_CENTER_Y)
-            matrix = afl.GameMatrix(self.home_team, self.away_team)
+            position = Position(x = FIELD_CENTER_X, y = FIELD_CENTER_Y)
+            matrix = GameMatrix(self.home_team, self.away_team)
             new_field_status, new_ball_direction, lateral_direction = matrix.next_state(field_status, position, s.BallDirection.NONE)
 
             self.assertEqual(new_field_status, s.HOME_TEAM_MOVING_STATUS)
@@ -48,9 +49,9 @@ class TestGameMatrix(unittest.TestCase):
             mock_rng = mock_fn()
             mock_rng.choice.side_effect = self.set_numpy_side_effect(s.HOME_TEAM_GOAL_STATUS, s.BallDirection.FORWARD, s.LateralDirection.NONE)
 
-            field_status = afl.FieldStatus(s.Possession.HOME_TEAM, s.BallStatus.MOVING)
-            position = afl.Position(x = afl.FIELD_MAX_X, y = afl.FIELD_CENTER_Y)
-            matrix = afl.GameMatrix(self.home_team, self.away_team)
+            field_status = s.FieldStatus(s.Possession.HOME_TEAM, s.BallStatus.MOVING)
+            position = Position(x = FIELD_MAX_X, y = FIELD_CENTER_Y)
+            matrix = GameMatrix(self.home_team, self.away_team)
             new_field_status, new_ball_direction, lateral_direction = matrix.next_state(field_status, position, s.BallDirection.FORWARD)
 
             self.assertEqual(new_field_status, s.HOME_TEAM_GOAL_STATUS)
@@ -62,9 +63,9 @@ class TestGameMatrix(unittest.TestCase):
             mock_rng = mock_fn()
             mock_rng.choice.side_effect = self.set_numpy_side_effect(s.HOME_TEAM_MOVING_STATUS, s.BallDirection.LATERAL, s.LateralDirection.RIGHT)
 
-            field_status = afl.FieldStatus(s.Possession.HOME_TEAM, s.BallStatus.MOVING)
-            position = afl.Position(x = afl.FIELD_MIN_X, y = afl.FIELD_CENTER_Y)
-            matrix = afl.GameMatrix(self.home_team, self.away_team)
+            field_status = s.FieldStatus(s.Possession.HOME_TEAM, s.BallStatus.MOVING)
+            position = Position(x = FIELD_MIN_X, y = FIELD_CENTER_Y)
+            matrix = GameMatrix(self.home_team, self.away_team)
             new_field_status, new_ball_direction, lateral_direction = matrix.next_state(field_status, position, s.BallDirection.LATERAL)
 
             self.assertEqual(new_field_status, s.HOME_TEAM_MOVING_STATUS)

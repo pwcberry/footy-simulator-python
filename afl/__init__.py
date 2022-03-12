@@ -2,6 +2,3 @@
 
 __app_name__ = "afl"
 __version__ = "0.1.0"
-
-from .field import *
-from .game_matrix import GameMatrix
