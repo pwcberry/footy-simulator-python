@@ -4,7 +4,7 @@ from dataclasses import dataclass
 class TeamScore:
     goals = 0
     behinds = 0
-
+    
     def copy(self):
         return TeamScore(self.goals, self.behinds)
 

@@ -1,7 +1,7 @@
 from matrix import *
 from status import FieldZone
 
-class BacksMatrix(ZoneMatrix):
+class BacksZoneMatrix(ZoneMatrix):
     def __init__(self, home_team_skill, away_team_skill, dist):
         super().__init__(FieldZone.BACKS)
 

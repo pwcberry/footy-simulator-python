@@ -17,3 +17,6 @@ class GameLog:
 
     def log_message(self, timer, message):
         self.output.write("{0} - {1}\n".format(timer, message))
+
+    def log_result(self, message):
+        self.output.write("\nRESULT: {}\n\n".format(message))
