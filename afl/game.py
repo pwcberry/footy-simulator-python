@@ -1,8 +1,10 @@
 import sys
-from logger import GameLog
-from game_matrix import GameMatrix
-from status import *
-import field
+from .field import Field
+from .game_matrix import GameMatrix
+from .game_score import GameScore
+from .status import *
+from .timer import Timer
+from .logger import GameLog
 
 # Their rating for defence: in preventing scores and moving the ball to the mid-field
 # Their rating for mid-field: retaining the ball and moving to the forward line
@@ -24,7 +26,7 @@ import field
 
 class Game:
     def __init__(self, home_team, away_team, log_output = sys.stdout):
-        self.field = field.Field(home_team, away_team)
+        self.field = Field(home_team, away_team)
         self.status = GameStatus.NOT_STARTED
         self.score = GameScore(home_team.name, away_team.name)
         self.logger = GameLog(log_output)

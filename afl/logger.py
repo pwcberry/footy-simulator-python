@@ -1,4 +1,6 @@
-from status import Timer, GameScore, GameStatus
+from .game_score import GameScore
+from .status import GameStatus
+from .timer import Timer
 
 class GameLog:
     def __init__(self, output):

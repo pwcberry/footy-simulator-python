@@ -1,6 +1,6 @@
 import unittest
-from logger import GameLog
-from status import GameScore, GameStatus, Timer
+
+from .context import GameLog, GameScore, Timer, status as s
 
 class MockBuffer:
     content = ""
@@ -41,7 +41,7 @@ class TestGameLog(unittest.TestCase):
         logger = GameLog(buffer)
 
         # Act
-        logger.log_status(GameStatus.QUARTER_TIME)
+        logger.log_status(s.GameStatus.QUARTER_TIME)
 
         # Assert
         self.assertEqual(buffer.content, "Status: QUARTER_TIME\n")
