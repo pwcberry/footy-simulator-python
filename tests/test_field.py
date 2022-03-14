@@ -267,7 +267,3 @@ class TestField(unittest.TestCase):
         f.move_laterally(s.LateralDirection.RIGHT)
         self.assertEqual(f.position.x, FIELD_CENTER_X)
         self.assertEqual(f.position.y, FIELD_MAX_Y)
-        
-
-if __name__ == "__main__":
-    unittest.main()

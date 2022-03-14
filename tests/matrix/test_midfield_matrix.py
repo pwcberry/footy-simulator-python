@@ -19,7 +19,7 @@ class TestMidFieldZoneMatrix(unittest.TestCase):
     def test_states_returns_expected_list(self):
         matrix = m.MidFieldZoneMatrix(self.home_team, self.away_team)
         self.assertEqual(len(matrix.states), len(self.states))
-        self.assertEqual(matrix.states, self.states)
+        self.assertCountEqual(matrix.states, self.states)
 
     def test_data_shape_is_consistent(self):
         matrix = m.MidFieldZoneMatrix(self.home_team, self.away_team)
@@ -27,8 +27,9 @@ class TestMidFieldZoneMatrix(unittest.TestCase):
         count = len(matrix_states)
 
         for st in matrix_states:
-            v = matrix.row(st)
-            self.assertEqual(len(v), count)
+            with self.subTest(matrix_state = st):
+                v = matrix.row(st)
+                self.assertEqual(len(v), count)
 
     def test_data_each_row_is_normalised(self):
         matrix = m.MidFieldZoneMatrix(self.home_team, self.away_team)
@@ -37,7 +38,3 @@ class TestMidFieldZoneMatrix(unittest.TestCase):
             r = matrix.row(st)
             v = sum(r)
             self.assertAlmostEqual(v, 1.0)
-
-
-if __name__ == "__main__":
-    unittest.main()

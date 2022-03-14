@@ -28,6 +28,3 @@ class TestTimer(unittest.TestCase):
         timer.seconds = 6
 
         self.assertEqual(str(timer), "19:06")
-
-if __name__ == "__main__":
-    unittest.main()

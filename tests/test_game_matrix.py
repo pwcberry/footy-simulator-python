@@ -71,6 +71,3 @@ class TestGameMatrix(unittest.TestCase):
             self.assertEqual(new_field_status, s.HOME_TEAM_MOVING_STATUS)
             self.assertEqual(new_ball_direction, s.BallDirection.LATERAL)
             self.assertEqual(lateral_direction, s.LateralDirection.RIGHT)
-
-if __name__ == "__main__":
-    unittest.main()

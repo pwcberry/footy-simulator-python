@@ -18,7 +18,7 @@ class TestForwardsDirectionMatrix(unittest.TestCase):
     def test_states_returns_expected_list(self):
         matrix = m.ForwardsDirectionMatrix(self.home_team, self.away_team)
         self.assertEqual(len(matrix.states), len(self.states))
-        self.assertEqual(matrix.states, self.states)
+        self.assertCountEqual(matrix.states, self.states)
 
     def test_row_returns_when_possession_is_in_contention(self):
         matrix = m.ForwardsDirectionMatrix(self.home_team, self.away_team)
@@ -68,7 +68,3 @@ class TestForwardsDirectionMatrix(unittest.TestCase):
             r = matrix.row(st, s.Possession.AWAY_TEAM)
             v = sum(r)
             self.assertAlmostEqual(v, 1.0)
-
-
-if __name__ == "__main__":
-    unittest.main()

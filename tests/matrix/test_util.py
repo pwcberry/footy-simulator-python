@@ -133,8 +133,3 @@ class TestMatrixUtilNormaliseFunction(unittest.TestCase):
         self.assertAlmostEqual(result[1], 0.65)
         self.assertAlmostEqual(result[2], 0.1)
         self.assertAlmostEqual(result[3], 0.1)
-
-
-
-if __name__ == "__main__":
-    unittest.main()

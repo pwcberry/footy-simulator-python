@@ -78,7 +78,3 @@ class TestGameScore(unittest.TestCase):
 
         self.assertEqual(team_scores["AAA"].total(), 12)
         self.assertEqual(team_scores["BBB"].total(), 13)
-
-
-if __name__ == "__main__":
-    unittest.main()

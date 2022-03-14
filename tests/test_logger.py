@@ -68,7 +68,3 @@ class TestGameLog(unittest.TestCase):
 
         # Assert
         self.assertEqual(buffer.content, "\nRESULT: DRAW\n\n")
-
-
-if __name__ == "__main__":
-    unittest.main()

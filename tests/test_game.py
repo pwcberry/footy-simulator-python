@@ -84,8 +84,3 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(game.status, s.GameStatus.FULL_TIME)
         self.assertEqual(game.play.call_count, 4)
-
-
-
-if __name__ == "__main__":
-    unittest.main()

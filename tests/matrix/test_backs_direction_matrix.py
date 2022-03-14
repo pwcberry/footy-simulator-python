@@ -2,7 +2,7 @@ import unittest
 
 from ..context import data as d, matrix as m, status as s
 
-class TestmBacksDirectionMatrix(unittest.TestCase):
+class TestBacksDirectionMatrix(unittest.TestCase):
     def setUp(self):
         self.states = [
             s.BallDirection.NONE, s.BallDirection.FORWARD, 
@@ -18,7 +18,7 @@ class TestmBacksDirectionMatrix(unittest.TestCase):
     def test_states_returns_expected_list(self):
         matrix = m.BacksDirectionMatrix(self.home_team, self.away_team)
         self.assertEqual(len(matrix.states), len(self.states))
-        self.assertEqual(matrix.states, self.states)
+        self.assertCountEqual(matrix.states, self.states)
 
     def test_row_returns_when_possession_is_in_contention(self):
         matrix = m.BacksDirectionMatrix(self.home_team, self.away_team)
@@ -88,7 +88,3 @@ class TestmBacksDirectionMatrix(unittest.TestCase):
         matrix = m.BacksDirectionMatrix(self.home_team, self.away_team)
         row = matrix.row(s.BallDirection.LATERAL, s.Possession.IN_CONTENTION)
         self.assertEqual(row[0], 1)
-
-
-if __name__ == "__main__":
-    unittest.main()
