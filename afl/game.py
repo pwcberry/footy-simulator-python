@@ -1,9 +1,8 @@
 import sys
+import afl
 from .field import Field
-from .game_matrix import GameMatrix
 from .game_score import GameScore
 from .status import *
-from .timer import Timer
 from .logger import GameLog
 
 # Their rating for defence: in preventing scores and moving the ball to the mid-field
@@ -30,11 +29,11 @@ class Game:
         self.status = GameStatus.NOT_STARTED
         self.score = GameScore(home_team.name, away_team.name)
         self.logger = GameLog(log_output)
-        self.timer = Timer()
+        self.timer = afl.timer.Timer()
+        self.game_matrix = afl.game_matrix.GameMatrix(home_team, away_team)
         self.home_team = home_team
         self.away_team = away_team
         self.ball_direction = BallDirection.NONE
-        self.game_matrix = GameMatrix(home_team, away_team)
 
     @property
     def team_in_attack(self):
@@ -108,14 +107,12 @@ class Game:
             elif self.field.ball_status == BallStatus.BEHIND:
                 self.score_behind()
 
-
     def log_tick(self):
         possession = self.field.field_status.possession
         ball_status = self.field.field_status.ball_status
         zone = self.field.field_zone
         direction = self.ball_direction
         self.logger.log_message(self.timer, "{}, {}, {}, {}".format(possession, ball_status, zone, direction))
-
 
     def score_goal(self):
         team = self.team_in_attack

@@ -1,6 +1,9 @@
 import unittest
 from unittest.mock import MagicMock, patch
+
+import afl
 from .context import Game, data as d, status as s
+from .fixture import MockBuffer
 
 class TestGame(unittest.TestCase):
     def setUp(self):
@@ -20,23 +23,33 @@ class TestGame(unittest.TestCase):
             ruck = d.Skills(0.5, 0.5, 0.5)
         )
 
-    @unittest.skip("Need better mocking of 'run' method")
-    def test_team_in_attack_home_team(self):
-        with patch("afl.game_matrix.GameMatrix") as mock:
-            matrix = mock.return_value
-            matrix.next_state.return_value = (s.HOME_TEAM_MOVING_STATUS, s.BallDirection.FORWARD, s.LateralDirection.NONE)
-            game = Game(self.home_team, self.away_team)
-            self.assertEqual(game.team_in_attack, self.home_team)
+    def test_run_sets_team_in_attack_home_team(self):
+        output = MagicMock(name="LogOutput")
+        with patch.object(afl.timer.Timer, "is_end_of_quarter") as timer_mock:
+            timer_mock.side_effect = [False, True]
 
-    @unittest.skip("Need better mocking of 'run' method")
-    def test_team_in_attack_away_team(self):
-        with patch("afl.field.Field") as mock:
-            field = mock.return_value
-            print(field)
-            game = Game(self.home_team, self.away_team)
-            field.possession = s.Possession.AWAY_TEAM
-            print(game.field.possession)
-            self.assertEqual(game.team_in_attack, self.away_team)
+            with patch.object(afl.game_matrix.GameMatrix, "next_state") as matrix_mock:
+                matrix_mock.return_value = (s.HOME_TEAM_MOVING_STATUS, s.BallDirection.FORWARD, s.LateralDirection.NONE)
+                game = Game(self.home_team, self.away_team, output)
+                game.play()
+                self.assertEqual(game.team_in_attack, self.home_team)
+                matrix_mock.reset_mock()
+            
+            timer_mock.reset_mock()
+
+    def test_run_setsteam_in_attack_away_team(self):
+        output = MagicMock(name="LogOutput")
+        with patch.object(afl.timer.Timer, "is_end_of_quarter") as timer_mock:
+            timer_mock.side_effect = [False, True]
+
+            with patch.object(afl.game_matrix.GameMatrix, "next_state") as matrix_mock:
+                matrix_mock.return_value = (s.AWAY_TEAM_MOVING_STATUS, s.BallDirection.FORWARD, s.LateralDirection.NONE)
+                game = Game(self.home_team, self.away_team, output)
+                game.play()
+                self.assertEqual(game.team_in_attack, self.away_team)
+                matrix_mock.reset_mock()
+            
+            timer_mock.reset_mock()
 
     def test_play_quarter_first_quarter(self):
         output = MagicMock(name="LogOutput")

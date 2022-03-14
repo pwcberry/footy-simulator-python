@@ -2,4 +2,8 @@
 
 cd $(dirname $0)/..
 
-python3.10 -m unittest discover -s tests/ -t .
+if [ -z "$1" ]; then
+    python3.10 -m unittest discover -s tests/ -t .
+else
+    python3.10 -m unittest $1
+fi

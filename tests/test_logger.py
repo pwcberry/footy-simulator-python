@@ -1,12 +1,7 @@
 import unittest
 
 from .context import GameLog, GameScore, Timer, status as s
-
-class MockBuffer:
-    content = ""
-
-    def write(self, input):
-        self.content = input
+from .fixture import MockBuffer
 
 class TestGameLog(unittest.TestCase):
 
