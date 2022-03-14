@@ -34,6 +34,7 @@ class Skills:
 @dataclass
 class Team:
     name: str
+    abbr: str
     forwards: Skills
     mid_field: Skills
     backs: Skills

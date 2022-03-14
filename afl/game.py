@@ -1,9 +1,10 @@
 import sys
-import afl
 from .field import Field
+from .game_matrix import GameMatrix
 from .game_score import GameScore
-from .status import *
 from .logger import GameLog
+from .status import *
+from .timer import Timer
 
 # Their rating for defence: in preventing scores and moving the ball to the mid-field
 # Their rating for mid-field: retaining the ball and moving to the forward line
@@ -29,8 +30,8 @@ class Game:
         self.status = GameStatus.NOT_STARTED
         self.score = GameScore(home_team.name, away_team.name)
         self.logger = GameLog(log_output)
-        self.timer = afl.timer.Timer()
-        self.game_matrix = afl.game_matrix.GameMatrix(home_team, away_team)
+        self.timer = Timer()
+        self.game_matrix = GameMatrix(home_team, away_team)
         self.home_team = home_team
         self.away_team = away_team
         self.ball_direction = BallDirection.NONE

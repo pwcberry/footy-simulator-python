@@ -1,6 +1,5 @@
-from data import Skills
-from data import Team
-from game import Game
+from .data import Skills, Team
+from .game import Game
 
 # This is a simulation of an Australian Rules Football game.
 #
@@ -82,6 +81,13 @@ def main():
     home_team, away_team = set_home_team(), set_away_team()
     play_game(home_team, away_team)
 
+class Football:
+    def __init__(self, sim_type, **kwargs):
+        self.sim_type = sim_type
+        self.teams_file = kwargs.get("teams")
+        self.season_file = kwargs.get("season")
+        self.season_rounds = kwargs.get("rounds") if sim_type == "season" else 0
+        self.show_ladder = kwargs.get("ladder") if sim_type == "season" else False
+        self.have_finals = kwargs.get("finals") if sim_type == "season" else False
 
-if __name__ == "__main__":
-    main()
+    
