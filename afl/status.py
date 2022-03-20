@@ -12,6 +12,16 @@ class GameStatus(Enum):
     FOURTH_QUARTER = 7
     FULL_TIME = 8
 
+    def __str__(self):
+        if self.name == "QUARTER_TIME":
+            return "1/4 Time"
+        elif self.name == "HALF_TIME":
+            return "1/2 Time"
+        elif self.name == "THREE_QUARTER_TIME":
+            return "3/4 Time"
+        else:
+            return self.name.title().replace("_", " ")
+
 class BallStatus(Enum):
     BOUNCE = 0
     STOPPED = 1

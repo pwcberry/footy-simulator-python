@@ -2,7 +2,7 @@ import sys
 from .field import Field
 from .game_matrix import GameMatrix
 from .game_score import GameScore
-from .logger import GameLog
+from .logger import GameLog, GameLogLevel
 from .status import *
 from .timer import Timer
 
@@ -25,11 +25,11 @@ from .timer import Timer
 # - https://en.wikipedia.org/wiki/Monte_Carlo_method
 
 class Game:
-    def __init__(self, home_team, away_team, log_output = sys.stdout):
+    def __init__(self, home_team, away_team, log_output = sys.stdout, log_level = GameLogLevel.ACTION):
         self.field = Field(home_team, away_team)
         self.status = GameStatus.NOT_STARTED
         self.score = GameScore(home_team.name, away_team.name)
-        self.logger = GameLog(log_output)
+        self.logger = GameLog(log_output, log_level)
         self.timer = Timer()
         self.game_matrix = GameMatrix(home_team, away_team)
         self.home_team = home_team
@@ -48,7 +48,7 @@ class Game:
 
     def play_quarter(self):
         if self.status == GameStatus.FULL_TIME:
-            self.logger.log_message(self.timer, "Game is finished!")
+            self.logger.log_action(self.timer, "Game is finished!")
             return
         elif self.status == GameStatus.NOT_STARTED:
             self.status = GameStatus.FIRST_QUARTER
@@ -61,7 +61,7 @@ class Game:
 
         self.timer.reset()
         self.score.set_status(self.status)
-        self.logger.log_status(self.status)
+        self.logger.log_game_status(self.status)
         self.field.centre_ball()
         self.play()
 
@@ -75,12 +75,11 @@ class Game:
         elif self.status == GameStatus.FOURTH_QUARTER:
             self.status = GameStatus.FULL_TIME
 
-        self.logger.log_status(self.status)
-        self.logger.log_full_score(self.score)          
+        self.logger.log_quarter_time(self.status, self.score)
 
         if self.status == GameStatus.FULL_TIME:
             self.score.set_status(GameStatus.FULL_TIME)
-            self.log_result()
+            self.logger.log_final_result(self.score)
 
     def play(self):
         while not self.timer.is_end_of_quarter():
@@ -113,32 +112,18 @@ class Game:
         ball_status = self.field.field_status.ball_status
         zone = self.field.field_zone
         direction = self.ball_direction
-        self.logger.log_message(self.timer, "{}, {}, {}, {}".format(possession, ball_status, zone, direction))
+        self.logger.log_action(self.timer, "{}, {}, {}, {}".format(possession, ball_status, zone, direction))
 
     def score_goal(self):
         team = self.team_in_attack
         self.score.score_goal(team.name)
-        self.logger.log_message(self.timer, "{}: GOAL!".format(team.name))
-        self.logger.log_short_score(self.timer, self.score)
+        self.logger.log_goal(self.timer, team.name, self.score)
         self.field.centre_ball()
         self.ball_direction = BallDirection.NONE
 
     def score_behind(self):
         team = self.team_in_attack
         self.score.score_behind(team.name)
-        self.logger.log_message(self.timer, "{}: Behind".format(team.name))
+        self.logger.log_behind(self.timer, team.name, self.score)
         self.field.switch_possession(BallStatus.FREE_KICK)
         self.ball_direction = BallDirection.FORWARD
-
-    def log_result(self):
-        final_score = self.score.get_final_score()
-        team_scores = [(team, score.total()) for team, score in final_score.items()]
-        margin = abs(team_scores[0][1] - team_scores[1][1])
-        
-        if margin > 0:
-            winning_team = team_scores[0][0] if team_scores[0][1] > team_scores[1][1] else team_scores[1][0]
-            result = "{} WON by {} points".format(winning_team, margin)
-            self.logger.log_result(result)
-        else:
-            self.logger.log_result("DRAW")
-    
