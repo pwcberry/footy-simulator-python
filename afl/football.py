@@ -1,3 +1,4 @@
+import yaml
 from .data import Skills, Team
 from .game import Game
 
@@ -90,4 +91,16 @@ class Football:
         self.show_ladder = kwargs.get("ladder") if sim_type == "season" else False
         self.have_finals = kwargs.get("finals") if sim_type == "season" else False
 
-    
+    def load_teams_file(path):
+        with open("./samples/teams.yml") as f:
+            # Will need to convert dictionaries to Team data class
+            teams = list(yaml.safe_load_all(f))
+
+    def load_season_file(path):
+        pass
+
+    def play_game(home_team_name, away_team_name):
+        pass
+
+    def play_season():
+        pass
